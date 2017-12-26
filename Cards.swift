@@ -9,34 +9,13 @@
 
 // collection of card types
 
-enum CardType: Int {
-    case creatureCard,
-    darkCard,
-    lightCard,
-    eventCard
+enum CardType {
+    case orange,
+    yellow,
+    green,
+    blue,
+    purple
 }
-
-// collection of spells
-enum SpellCardNames {
-    
-    case lightWell,
-    solarWinds,
-    darkMatter
-}
-
-// collection of creatures
-enum CreatureCardNames {
-    
-    case nightOwl,
-    vampireBat,
-    arcticWolf
-    
-}
-
-
-// create cards with their properties here... 
-
-
 
 
 

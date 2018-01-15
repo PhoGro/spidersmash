@@ -9,7 +9,7 @@
 
 // collection of card types
 
-enum CardType {
+enum cardType {
     case orange,
     yellow,
     green,

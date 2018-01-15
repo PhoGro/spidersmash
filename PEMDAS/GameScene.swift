@@ -14,13 +14,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate, Alerts {
     
 //MARK: SPIDER PROPERTIES
     
-    //Initialize spawn positions for spiders
-//    let dzPosOne = CGPoint(x: -240, y: 180)
-//    let dzPosTwo = CGPoint(x: -240, y: 320)
-//    let dzPosThree = CGPoint(x: 0, y: 400)
-//    let dzPosFour = CGPoint(x: 240, y: 195)
-//    let dzPosFive = CGPoint(x: 240, y: 120)
-    
     var spawnPositions = [CGPoint]() //contains an arrary of dzPOS above
     var spawnSpider: SKSpriteNode? //temp SKSpriteNode for spawning spiders
     var spawnAmount = 1 //tracks how many spiders to spawn at a time
@@ -29,18 +22,17 @@ class GameScene: SKScene, SKPhysicsContactDelegate, Alerts {
     var isAttacking = false //determines if a spider is currently attacking
     var spider: SKSpriteNode?
     var playerColor = "default"
-    
     var spawnSpiderHealth = 2
     var spiderHealth = 2
     
 //MARK: PLAYER PROPERTIES
     
     //Allows player to select color of spider to attack
-    var cardOne: SKSpriteNode?
-    var cardTwo: SKSpriteNode?
-    var cardThree: SKSpriteNode?
-    var cardFour: SKSpriteNode?
-    var cardFive: SKSpriteNode?
+    var hammerOne: SKSpriteNode?
+    var hammerTwo: SKSpriteNode?
+    var hammerThree: SKSpriteNode?
+    var hammerFour: SKSpriteNode?
+    var hammerFive: SKSpriteNode?
     
     //initialize positions for player's HUD positions
     
@@ -149,7 +141,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate, Alerts {
         
         if let swipeGesture = gesture as? UISwipeGestureRecognizer {
             
-            
             switch swipeGesture.direction {
             case UISwipeGestureRecognizerDirection.right:
                 player.run(right)
@@ -184,11 +175,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, Alerts {
             if player.position.distance(point: (spider?.position)!) > 1 {
                 isAttacking = false
             }
-        
         }
-        
-        
-        
     }
 
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -198,8 +185,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate, Alerts {
         let node = self.atPoint(location)
         
         match = false //ensures that match is reset to false until a match is found
-        
-        //TODO: think about how to rewrite the touches code so that it is broken up into simplified methods.
         
         if startGame == false {
             
@@ -253,11 +238,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate, Alerts {
         //Will probably need to update player here too as we build more complixity into the player's interactions
         if startGame == true {
             spiderWaveGenerator()
+            
         }
         
-        playerCamera.position = player.position
         playerLight.position = player.position
-        playerCamera.position = player.position
+        
+        if playerAttacked == false {
+            playerCamera.position = player.position
+        }
         
         if playerHealth < 1 {
             gameOver()
@@ -299,7 +287,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, Alerts {
         player.physicsBody?.affectedByGravity = false
         player.lightingBitMask = 5
         player.shadowedBitMask = 0
-        player.shadowCastBitMask = 5
+        player.shadowCastBitMask = 0
         addChild(player)
         
         //add camera
@@ -315,11 +303,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate, Alerts {
         playerLight.position = player.position
         playerLight.falloff = 0.5
         playerLight.lightColor = SKColor(red: 0.8, green: 0.8, blue: 0.8, alpha: 0.8)
-        playerLight.shadowColor = SKColor(red: 0.3, green: 0.3, blue: 0.3, alpha: 0.8)
-        playerLight.ambientColor = SKColor(red: 0.3, green: 0.3, blue: 0.1, alpha: 0.4)
+        //playerLight.shadowColor = SKColor(red: 0.3, green: 0.3, blue: 0.3, alpha: 0.8)
+        playerLight.ambientColor = SKColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 0.0)
         playerLight.isEnabled = true
         playerLight.categoryBitMask = 5
-        playerLight.zPosition = 4
+        playerLight.zPosition = 3
         addChild(playerLight)
         
         //players health bar
@@ -364,7 +352,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, Alerts {
         //Set the background
         let background = SKSpriteNode(imageNamed: "background")
         background.zPosition = -1
-        background.size = self.frame.size
+        background.size = frame.size
         background.position = CGPoint(x: 0.5, y: 0.5)
         background.lightingBitMask = 5
         
@@ -383,30 +371,30 @@ class GameScene: SKScene, SKPhysicsContactDelegate, Alerts {
     func createCard() -> SKSpriteNode {
         
         //create the five cards for a player's hand.
-        cardOne = Card(cardType: .orange)
-        cardTwo = Card(cardType: .purple)
-        cardThree = Card(cardType: .yellow)
-        cardFour = Card(cardType: .green)
-        cardFive = Card(cardType: .blue)
+        hammerOne = 
+        hammerTwo = Hammers(hammerColor: .purple)
+        hammerThree = Hammers(hammerColor: .yellow)
+        hammerFour = Hammers(hammerColor: .green)
+        hammerFive = Hammers(hammerColor: .blue)
         
         //Initialize the properties of each card
-        cardOne?.name = "playerCard"
-        cardOne?.texture = SKTexture(imageNamed: "Orange")
+        hammerOne?.name = "playerCard"
+        hammerOne?.texture = SKTexture(imageNamed: "Orange")
         
-        cardTwo?.name = "playerCard"
-        cardTwo?.texture = SKTexture(imageNamed: "Purple")
+        hammerTwo?.name = "playerCard"
+        hammerTwo?.texture = SKTexture(imageNamed: "Purple")
         
-        cardThree?.name = "playerCard"
-        cardThree?.texture = SKTexture(imageNamed: "Yellow")
+        hammerThree?.name = "playerCard"
+        hammerThree?.texture = SKTexture(imageNamed: "Yellow")
         
-        cardFour?.name = "playerCard"
-        cardFour?.texture = SKTexture(imageNamed: "Green")
+        hammerFour?.name = "playerCard"
+        hammerFour?.texture = SKTexture(imageNamed: "Green")
         
-        cardFive?.name = "playerCard"
-        cardFive?.texture = SKTexture(imageNamed: "Blue")
+        hammerFive?.name = "playerCard"
+        hammerFive?.texture = SKTexture(imageNamed: "Blue")
         
         //Creates an arrary of cards
-        deck = [cardOne!, cardTwo!, cardThree!, cardFour!, cardFive!]
+        deck = [hammerOne!, hammerTwo!, hammerThree!, hammerFour!, hammerFive!]
         
         //picks a random card from the arrary
         let randomCardNumber = Int(arc4random_uniform(UInt32(deck.count)))
@@ -418,8 +406,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate, Alerts {
     }
     
     func startingHand() {
-        
-        
         
         //an arrary for the player's card positions
         playerHand = [posOne, posTwo, posThree, posFour, posFive]
@@ -525,7 +511,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate, Alerts {
         
         let spiderPOS = makePositiveorNegative(height: randomHeight, width: randomWidth)
         
-        
         return spiderPOS
         
     }
@@ -536,9 +521,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate, Alerts {
         var spiderWidth = width
         let randomHeight = arc4random_uniform(2)
         let randomWidth = arc4random_uniform(2)
-        
-        print("\(randomHeight)")
-        print("\(randomWidth)")
         
         if randomHeight == 0 {
             spiderHeight = height
@@ -621,9 +603,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate, Alerts {
             saveHighScore()
         }
         
-        let gameOver = GameOverScene(size: (scene?.size)!)
+        let gameOver = GameOverScene(size: (self.scene?.size)!)
+        //let gameOver = GameOverScene(fileNamed: "GameOverScene")
         gameOver.scaleMode = .aspectFill
-        
         gameOver.userData = NSMutableDictionary()
         gameOver.userData?.setObject(points, forKey: "score" as NSCopying)
         gameOver.userData?.setObject(highScore, forKey: "HS" as NSCopying)
@@ -663,6 +645,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, Alerts {
             let originalSpiderPosition = spider.position
             
             //Player Attack!
+            
             if spawnSpiderHealth > 0 && attackTurn % 2 == 0 {
                 
                 spider.physicsBody?.collisionBitMask = 0
@@ -671,7 +654,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, Alerts {
                 let attackAnimation = SKAction.move(to: spider.position, duration: 0.2)
                 let attackReturn = SKAction.move(to: originalPlayerPosition, duration: 0.2)
                 let attackSequence = SKAction.sequence([attackAnimation, attackReturn])
-                
+                playerAttacked = true
                 player.run(attackSequence, completion: {
                     self.spawnSpiderHealth -= 2
                     attackTurn = 1
@@ -692,6 +675,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, Alerts {
                             if self.spiderCount == 0 {
                                 self.waveLevel += 1
                                 self.spawnAmount = 1
+                                
                             }
                             attackTurn = 0
                         }
@@ -699,7 +683,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate, Alerts {
                 //reset player's positining/physics body
                 player.zPosition = 3
                 spider.physicsBody?.collisionBitMask = 1
-                    
+                    self.playerAttacked = false
+                
                 })
                 
                 //spider counter attack
@@ -716,12 +701,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate, Alerts {
                         let attackSequence = SKAction.sequence([attackAnimation, attackReturn])
                         
                         spider.run(attackSequence, completion: {
-                            self.playerHealth -= 5
+                            self.playerHealth -= 100
                             attackTurn = 0
                             
                             spider.zPosition = 2
                             player.physicsBody?.collisionBitMask = 1
+                            spider.physicsBody?.collisionBitMask = 1
                             self.playerAttacked = false
+                            
                         })
                     }
                 }
@@ -742,12 +729,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate, Alerts {
             let attackReturn = SKAction.move(to: originalSpiderPosition, duration: 0.2)
             let attackSequence = SKAction.sequence([attackAnimation, attackReturn])
             spider.run(attackSequence, completion: {
-                //spider.removeFromParent()
-                //player.removeAllActions()
-                //self.bloodSplatter(pos: (spider.position))
-                //self.points += 10
-                //self.spiderCount -= 1
-                self.playerHealth -= 5
+                self.playerHealth -= 100
+                player.physicsBody?.collisionBitMask = 1
             })
         }
         

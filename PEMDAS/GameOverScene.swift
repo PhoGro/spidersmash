@@ -60,11 +60,14 @@ class GameOverScene: SKScene {
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         
         let transition = SKTransition.flipVertical(withDuration: 0.5)
-        let gameScene = SKScene(fileNamed: "GameScene") as! GameScene
-        
+        if let gameScene = SKScene(fileNamed: "GameScene") {
+
         gameScene.userData = NSMutableDictionary()
+        gameScene.scaleMode = .aspectFill
+            
+        view?.presentScene(gameScene, transition: transition)
         
-        self.view?.presentScene(gameScene, transition: transition)
+        }
         
     }
 

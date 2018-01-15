@@ -11,6 +11,7 @@
 		86063D051F5633AD00E21751 /* Cards.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86063D041F5633AD00E21751 /* Cards.swift */; };
 		860B9F5D1FEB5331005E324A /* GameOverScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 860B9F5C1FEB5331005E324A /* GameOverScene.sks */; };
 		860B9F5F1FEB5358005E324A /* GameOverScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 860B9F5E1FEB5358005E324A /* GameOverScene.swift */; };
+		860B9F611FF423BE005E324A /* HeathBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 860B9F601FF423BE005E324A /* HeathBar.swift */; };
 		8639C2341F44FBC80035CAA5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8639C2331F44FBC80035CAA5 /* AppDelegate.swift */; };
 		8639C2361F44FBC80035CAA5 /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 8639C2351F44FBC80035CAA5 /* GameScene.sks */; };
 		8639C2381F44FBC80035CAA5 /* Actions.sks in Resources */ = {isa = PBXBuildFile; fileRef = 8639C2371F44FBC80035CAA5 /* Actions.sks */; };
@@ -21,7 +22,6 @@
 		8639C2441F44FBC80035CAA5 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8639C2421F44FBC80035CAA5 /* LaunchScreen.storyboard */; };
 		866AE5481FAD13B800C1BB6D /* Spiders.swift in Sources */ = {isa = PBXBuildFile; fileRef = 866AE5471FAD13B800C1BB6D /* Spiders.swift */; };
 		866AE54A1FAD13E400C1BB6D /* Spider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 866AE5491FAD13E400C1BB6D /* Spider.swift */; };
-		869B75C21FDC674F002BF098 /* Paths.swift in Sources */ = {isa = PBXBuildFile; fileRef = 869B75C11FDC674F002BF098 /* Paths.swift */; };
 		86FF44A51F48752D00E9053C /* Alerts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86FF44A41F48752D00E9053C /* Alerts.swift */; };
 /* End PBXBuildFile section */
 
@@ -30,6 +30,7 @@
 		86063D041F5633AD00E21751 /* Cards.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Cards.swift; path = ../Cards.swift; sourceTree = "<group>"; };
 		860B9F5C1FEB5331005E324A /* GameOverScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameOverScene.sks; sourceTree = "<group>"; };
 		860B9F5E1FEB5358005E324A /* GameOverScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameOverScene.swift; sourceTree = "<group>"; };
+		860B9F601FF423BE005E324A /* HeathBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeathBar.swift; sourceTree = "<group>"; };
 		8639C2301F44FBC80035CAA5 /* PEMDAS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PEMDAS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8639C2331F44FBC80035CAA5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		8639C2351F44FBC80035CAA5 /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
@@ -42,7 +43,6 @@
 		8639C2451F44FBC80035CAA5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		866AE5471FAD13B800C1BB6D /* Spiders.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Spiders.swift; sourceTree = SOURCE_ROOT; };
 		866AE5491FAD13E400C1BB6D /* Spider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Spider.swift; sourceTree = "<group>"; };
-		869B75C11FDC674F002BF098 /* Paths.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Paths.swift; sourceTree = "<group>"; };
 		86FF44A41F48752D00E9053C /* Alerts.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Alerts.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -62,6 +62,7 @@
 			children = (
 				86063CFA1F4CD8D300E21751 /* Card.swift */,
 				866AE5491FAD13E400C1BB6D /* Spider.swift */,
+				860B9F601FF423BE005E324A /* HeathBar.swift */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -96,7 +97,6 @@
 				866AE5471FAD13B800C1BB6D /* Spiders.swift */,
 				8639C2391F44FBC80035CAA5 /* GameScene.swift */,
 				860B9F5E1FEB5358005E324A /* GameOverScene.swift */,
-				869B75C11FDC674F002BF098 /* Paths.swift */,
 			);
 			name = Core;
 			sourceTree = "<group>";
@@ -207,10 +207,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				8639C23A1F44FBC80035CAA5 /* GameScene.swift in Sources */,
+				860B9F611FF423BE005E324A /* HeathBar.swift in Sources */,
 				8639C23C1F44FBC80035CAA5 /* GameViewController.swift in Sources */,
 				86063D051F5633AD00E21751 /* Cards.swift in Sources */,
 				860B9F5F1FEB5358005E324A /* GameOverScene.swift in Sources */,
-				869B75C21FDC674F002BF098 /* Paths.swift in Sources */,
 				866AE5481FAD13B800C1BB6D /* Spiders.swift in Sources */,
 				86063CFB1F4CD8D300E21751 /* Card.swift in Sources */,
 				86FF44A51F48752D00E9053C /* Alerts.swift in Sources */,

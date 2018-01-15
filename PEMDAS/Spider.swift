@@ -14,7 +14,9 @@ class Spider : SKSpriteNode {
     
     let spiderType: SpiderType
     let frontTexture: SKTexture
-
+    
+    var spiderHealth = 2
+    
     required init?(coder aDecoder: NSCoder) {
         fatalError("NSCoding not supported")
     }
@@ -22,7 +24,6 @@ class Spider : SKSpriteNode {
     init(spiderType: SpiderType) {
        
         self.spiderType = spiderType
-
         
         switch spiderType {
         case .orangeSpider:

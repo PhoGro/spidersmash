@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		86063CFB1F4CD8D300E21751 /* Card.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86063CFA1F4CD8D300E21751 /* Card.swift */; };
-		86063D051F5633AD00E21751 /* CardType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86063D041F5633AD00E21751 /* CardType.swift */; };
+		86063D051F5633AD00E21751 /* HammerType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86063D041F5633AD00E21751 /* HammerType.swift */; };
 		860B9F5D1FEB5331005E324A /* GameOverScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 860B9F5C1FEB5331005E324A /* GameOverScene.sks */; };
 		860B9F5F1FEB5358005E324A /* GameOverScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 860B9F5E1FEB5358005E324A /* GameOverScene.swift */; };
 		860B9F611FF423BE005E324A /* HeathBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 860B9F601FF423BE005E324A /* HeathBar.swift */; };
@@ -23,12 +23,13 @@
 		866AE5481FAD13B800C1BB6D /* Spiders.swift in Sources */ = {isa = PBXBuildFile; fileRef = 866AE5471FAD13B800C1BB6D /* Spiders.swift */; };
 		866AE54A1FAD13E400C1BB6D /* Spider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 866AE5491FAD13E400C1BB6D /* Spider.swift */; };
 		86B80674200D5B4B0092A8E1 /* GameSetup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86B80673200D5B4B0092A8E1 /* GameSetup.swift */; };
+		86CF443D2023DA3400B75CC5 /* lvl2.sks in Resources */ = {isa = PBXBuildFile; fileRef = 86CF443C2023DA3400B75CC5 /* lvl2.sks */; };
 		86FF44A51F48752D00E9053C /* Alerts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86FF44A41F48752D00E9053C /* Alerts.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		86063CFA1F4CD8D300E21751 /* Card.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Card.swift; sourceTree = "<group>"; };
-		86063D041F5633AD00E21751 /* CardType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CardType.swift; path = ../CardType.swift; sourceTree = "<group>"; };
+		86063D041F5633AD00E21751 /* HammerType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HammerType.swift; path = ../HammerType.swift; sourceTree = "<group>"; };
 		860B9F5C1FEB5331005E324A /* GameOverScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameOverScene.sks; sourceTree = "<group>"; };
 		860B9F5E1FEB5358005E324A /* GameOverScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameOverScene.swift; sourceTree = "<group>"; };
 		860B9F601FF423BE005E324A /* HeathBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeathBar.swift; sourceTree = "<group>"; };
@@ -45,6 +46,7 @@
 		866AE5471FAD13B800C1BB6D /* Spiders.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Spiders.swift; sourceTree = SOURCE_ROOT; };
 		866AE5491FAD13E400C1BB6D /* Spider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Spider.swift; sourceTree = "<group>"; };
 		86B80673200D5B4B0092A8E1 /* GameSetup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameSetup.swift; sourceTree = "<group>"; };
+		86CF443C2023DA3400B75CC5 /* lvl2.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = lvl2.sks; sourceTree = "<group>"; };
 		86FF44A41F48752D00E9053C /* Alerts.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Alerts.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -87,6 +89,7 @@
 			isa = PBXGroup;
 			children = (
 				8639C2351F44FBC80035CAA5 /* GameScene.sks */,
+				86CF443C2023DA3400B75CC5 /* lvl2.sks */,
 				860B9F5C1FEB5331005E324A /* GameOverScene.sks */,
 			);
 			name = Scenes;
@@ -95,7 +98,7 @@
 		86063D031F56325700E21751 /* Core */ = {
 			isa = PBXGroup;
 			children = (
-				86063D041F5633AD00E21751 /* CardType.swift */,
+				86063D041F5633AD00E21751 /* HammerType.swift */,
 				866AE5471FAD13B800C1BB6D /* Spiders.swift */,
 				8639C2391F44FBC80035CAA5 /* GameScene.swift */,
 				860B9F5E1FEB5358005E324A /* GameOverScene.swift */,
@@ -196,6 +199,7 @@
 				8639C23F1F44FBC80035CAA5 /* Main.storyboard in Resources */,
 				8639C2361F44FBC80035CAA5 /* GameScene.sks in Resources */,
 				8639C2411F44FBC80035CAA5 /* Assets.xcassets in Resources */,
+				86CF443D2023DA3400B75CC5 /* lvl2.sks in Resources */,
 				8639C2441F44FBC80035CAA5 /* LaunchScreen.storyboard in Resources */,
 				860B9F5D1FEB5331005E324A /* GameOverScene.sks in Resources */,
 				8639C2381F44FBC80035CAA5 /* Actions.sks in Resources */,
@@ -212,7 +216,7 @@
 				8639C23A1F44FBC80035CAA5 /* GameScene.swift in Sources */,
 				860B9F611FF423BE005E324A /* HeathBar.swift in Sources */,
 				8639C23C1F44FBC80035CAA5 /* GameViewController.swift in Sources */,
-				86063D051F5633AD00E21751 /* CardType.swift in Sources */,
+				86063D051F5633AD00E21751 /* HammerType.swift in Sources */,
 				860B9F5F1FEB5358005E324A /* GameOverScene.swift in Sources */,
 				86B80674200D5B4B0092A8E1 /* GameSetup.swift in Sources */,
 				866AE5481FAD13B800C1BB6D /* Spiders.swift in Sources */,

@@ -9,7 +9,7 @@
 
 // collection of card types
 
-enum cardType {
+enum HammerType {
     case orange,
     yellow,
     green,

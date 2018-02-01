@@ -10,21 +10,21 @@ import SpriteKit
 import UIKit
 
 
-class Hammer : SKSpriteNode {
+class Card : SKSpriteNode {
     
-    let hammerType: HammerType
+    let cardType: CardType
     let frontTexture: SKTexture
 
     required init?(coder aDecoder: NSCoder) {
         fatalError("NSCoding not supported")
     }
     
-    init(hammerType: HammerType) {
+    init(cardType: CardType) {
        
-        self.hammerType = hammerType
+        self.cardType = cardType
 
         
-        switch hammerType {
+        switch cardType {
         case .orange:
             frontTexture = SKTexture(imageNamed: "Orange")
         case .blue:

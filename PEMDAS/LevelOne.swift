@@ -9,7 +9,7 @@
 import SpriteKit
 import GameplayKit
 
-class GameScene: SKScene, SKPhysicsContactDelegate, Alerts {
+class LevelOne: SKScene, SKPhysicsContactDelegate, Alerts, SceneManager {
     
     
 //MARK: SPIDER PROPERTIES
@@ -77,6 +77,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, Alerts {
     
     var lvlExitOpen = false
     var lvlExit: SKSpriteNode!
+    public var nxtLvl = "LevelTwo"
     
     let startButton = SKSpriteNode(imageNamed: "startButton") //allows player to start game
     var shuffleButton = SKSpriteNode(imageNamed: "shuffleButton") //allows player to shuffle colors available
@@ -86,7 +87,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, Alerts {
     
     var startGame = false //determines if game is started
     
-    var waveLevel = 1 //tracks current wave level, increases difficult as waves are completed
+    public var waveLevel = 1 //tracks current wave level, increases difficult as waves are completed
     var match = false //tracks whether or not a match has been made (set to false when touches begin, true on match collision)
     var spotTaken: Int? //tracks if a player's card already exists in the current location disallowing spawn
     
@@ -94,6 +95,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate, Alerts {
     var points: Int = 0 {
         didSet {
             pointsLabel?.text = "Score: \(points)"
+        }
+    }
+    
+    var levelTimerLabel = SKLabelNode(fontNamed: "ArialMT")
+    
+    //Immediately after leveTimerValue variable is set, update label's text
+    var levelTimerValue: Int = 500 {
+        didSet {
+            levelTimerLabel.text = "Time left: \(levelTimerValue)"
         }
     }
     
@@ -121,6 +131,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, Alerts {
         playerCamera.addChild(playerHUD)
         setupGame()
         startingHand()
+        startGame = true
         
     }
     
@@ -150,7 +161,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, Alerts {
             //Start the game! (seperate into a startGame() function?
             
             if ((node as? SKSpriteNode)) == startButton {
-                startGame = true
+                
                 startButton.removeFromParent()
                 highScoreLabel.removeFromParent()
             }
@@ -160,7 +171,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, Alerts {
             //Player shuffles colors
             if ((node as? SKSpriteNode) != nil && node.name?.contains("shuffleButton") == true) {
                 shuffleButtonPressed()
-            } else if ((node as? SKSpriteNode) != nil) && (node.name?.contains("Spider") == false) && (node.name?.contains("hero") == false) {
+            } else if ((node as? SKSpriteNode) != nil) && (node.name?.contains("playerCard") == true) {
                 
                 //player has selected a color
                 
@@ -206,7 +217,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, Alerts {
             playerCamera.position = player.position
         }
         
-        if playerHealth < 1 {
+        if playerHealth < 1 || levelTimerValue < 1 {
             gameOver()
         }
         
@@ -218,20 +229,20 @@ class GameScene: SKScene, SKPhysicsContactDelegate, Alerts {
     
     func setupGame() {
         
-        //add start button
-        startButton.position = CGPoint(x: 0.5, y: 5)
-        startButton.zPosition = 100
-        addChild(startButton)
-        
-        //set highscorelabel
-        highScoreLabel = SKLabelNode()
-        highScoreLabel.text = "High Score = \(UserDefaults().integer(forKey: "HIGHSCORE"))"
-        highScoreLabel.fontColor = SKColor.white
-        highScoreLabel.fontName = "AvenirNext-Bold"
-        highScoreLabel.fontSize = 30
-        highScoreLabel.zPosition = 5
-        highScoreLabel.position = CGPoint(x: 0, y: 200)
-        addChild(highScoreLabel)
+//        //add start button
+//        startButton.position = CGPoint(x: 0.5, y: 5)
+//        startButton.zPosition = 100
+//        addChild(startButton)
+//
+//        //set highscorelabel
+//        highScoreLabel = SKLabelNode()
+//        highScoreLabel.text = "High Score = \(UserDefaults().integer(forKey: "HIGHSCORE"))"
+//        highScoreLabel.fontColor = SKColor.white
+//        highScoreLabel.fontName = "AvenirNext-Bold"
+//        highScoreLabel.fontSize = 30
+//        highScoreLabel.zPosition = 5
+//        highScoreLabel.position = CGPoint(x: 0, y: 200)
+//        addChild(highScoreLabel)
         
         //add player
 //        player.position = CGPoint(x: 0.5, y: -70)
@@ -341,6 +352,27 @@ class GameScene: SKScene, SKPhysicsContactDelegate, Alerts {
         lvlExit.lightingBitMask = 5
         lvlExit.shadowedBitMask = 5
         lvlExit.shadowCastBitMask = 5
+        
+        levelTimerLabel.fontColor = SKColor.green
+        levelTimerLabel.fontSize = 12
+        levelTimerLabel.zPosition = 10
+        levelTimerLabel.position = CGPoint(x: 0, y: -210)
+        levelTimerLabel.text = "Time left: \(levelTimerValue)"
+        playerHUD.addChild(levelTimerLabel)
+        
+        let wait = SKAction.wait(forDuration: 0.5) //change countdown speed here
+        let block = SKAction.run({
+            [unowned self] in
+            
+            if self.levelTimerValue > 0{
+                self.levelTimerValue -= 1
+            }else{
+                self.removeAction(forKey: "countdown")
+            }
+        })
+        let sequence = SKAction.sequence([wait,block])
+        
+        run(SKAction.repeatForever(sequence), withKey: "countdown")
         
         //define swipe gestures for player movement
         let swipeRight = UISwipeGestureRecognizer(target: self, action: #selector(self.respondToSwipeGesture))
@@ -708,6 +740,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate, Alerts {
         
     }
     
+    private func goTo(nextLevel: SceneIdentifier) {
+        
+        // pass key for next level which is passed from didMove to view of previous level
+        print("loading scene for \(nxtLvl)")
+        loadScene(withIdentifier: SceneIdentifier(rawValue: nxtLvl)!)
+        
+    }
+    
     func restartGame() {
         
         //Clear Board State
@@ -893,6 +933,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate, Alerts {
                 print("Kill more spiders")
             } else if lvlExitOpen == true {
                 print("Advance to next level")
+                if nxtLvl != "GameOver" {
+                    goTo(nextLevel: SceneIdentifier(rawValue: nxtLvl)!)
+                } else if nxtLvl == "GameOver" {
+                    gameOver()
+                }
+
             }
         }
     }

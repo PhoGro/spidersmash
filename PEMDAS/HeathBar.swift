@@ -20,7 +20,7 @@ class HealthBar:SKNode {
         set {
             let value = max(min(newValue,1.0),0.0)
             if let bar = bar {
-                bar.yScale = value
+                bar.xScale = value
                 _progress = value
             }
         }
@@ -31,7 +31,7 @@ class HealthBar:SKNode {
         background = SKSpriteNode(color:SKColor.white,size:size)
         bar = SKSpriteNode(color:color,size:size)
         if let bar = bar, let background = background {
-            bar.yScale = 0.0
+            bar.xScale = 0.0
             bar.zPosition = 1.0
             bar.position = CGPoint(x:-size.width/2,y:0)
             bar.anchorPoint = CGPoint(x:0.0,y:0.5)

@@ -8,20 +8,20 @@
 
 import Foundation
 import SpriteKit
-class GameOverScene: SKScene {
+class GameOverScene: LevelOne {
     
     var scoreLabel: SKLabelNode?
-    var highScoreLabel: SKLabelNode?
+    //var highScoreLabel: SKLabelNode?
     var gameOverLabel: SKLabelNode?
     let background = SKSpriteNode(imageNamed: "background")
-    var score = 0
     
     override func didMove(to view: SKView) {
         
         scene?.anchorPoint = CGPoint(x: 0.5, y: 0.5)
         
         score =  self.userData?.value(forKey: "score") as! Int
-        
+        points = score
+       
         //Set the background
         background.size = frame.size
         background.zPosition = -1
@@ -48,16 +48,17 @@ class GameOverScene: SKScene {
         
         //set highscorelabe
         highScoreLabel = SKLabelNode()
-        highScoreLabel?.text = "High Score = \(UserDefaults().integer(forKey: "HIGHSCORE"))"
-        highScoreLabel?.fontColor = SKColor.white
-        highScoreLabel?.fontName = "AvenirNext-Bold"
-        highScoreLabel?.fontSize = 30
-        highScoreLabel?.position = CGPoint(x: 0, y: -120)
-        addChild(highScoreLabel!)
+        highScoreLabel.text = "High Score = \(UserDefaults().integer(forKey: "HIGHSCORE"))"
+        highScoreLabel.fontColor = SKColor.white
+        highScoreLabel.fontName = "AvenirNext-Bold"
+        highScoreLabel.fontSize = 30
+        highScoreLabel.position = CGPoint(x: 0, y: -120)
+        addChild(highScoreLabel)
         
         }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        restartGame()
         
         let transition = SKTransition.flipVertical(withDuration: 0.5)
         if let mainMenu = SKScene(fileNamed: "MainMenu") {

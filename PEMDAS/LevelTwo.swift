@@ -23,15 +23,24 @@ class LevelTwo: LevelOne {
     override func didMove(to view: SKView) {
         super.didMove(to: view)
         
+        waveLevel = 2
+        print("Current Wave: \(waveLevel). It's suposed to be two")
+        
+        score =  self.userData?.value(forKey: "score") as! Int
+        points = score
+        
+        timeElapsed = self.userData?.value(forKey: "LTV") as! Int
+        levelTimerValue = timeElapsed
+        
+        playerHealth = self.userData?.value(forKey: "playerHealth") as! Double
+        
         print("arrived at \(String(describing: nxtLvl))")
         
         //change nxtLvl to "LevelThree"
         nxtLvl = "LevelThree"
-        waveLevel = 2
+        
         
         print("Go to: \(String(describing: nxtLvl))")
-        
-        //to goal
         
     }
     

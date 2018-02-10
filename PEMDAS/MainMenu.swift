@@ -16,6 +16,7 @@ class MainMenu: SKScene, SceneManager {
     
     override func didMove(to view: SKView) {
         
+        nxtLvl = "LevelOne"
         scene?.anchorPoint = CGPoint(x: 0.5, y: 0.5)
         
         //Set title
@@ -43,15 +44,15 @@ class MainMenu: SKScene, SceneManager {
         }
         
         
-        let transition = SKTransition.flipVertical(withDuration: 0.5)
-        if let gameScene = SKScene(fileNamed: "GameScene") {
-            
-            gameScene.userData = NSMutableDictionary()
-            gameScene.scaleMode = .aspectFill
-            
-            view?.presentScene(gameScene, transition: transition)
-            
-        }
+//        let transition = SKTransition.flipVertical(withDuration: 0.5)
+//        if let gameScene = SKScene(fileNamed: "GameScene") {
+//            
+//            gameScene.userData = NSMutableDictionary()
+//            gameScene.scaleMode = .aspectFill
+//            
+//            view?.presentScene(gameScene, transition: transition)
+//            
+//        }
         
     }
     
@@ -59,8 +60,8 @@ class MainMenu: SKScene, SceneManager {
         
         // pass key for next level which is passed from didMove to view of previous level
         print("loading scene for \(nxtLvl)")
-        loadScene(withIdentifier: SceneIdentifier(rawValue: nxtLvl)!)
-        
+//        loadScene(withIdentifier: SceneIdentifier(rawValue: nxtLvl)!)
+        loadScene(withIdentifier: SceneIdentifier(rawValue: nxtLvl)!, currentScore: 0, currentTime: 0, currentPlayerHealth: 100)
     }
     
 }

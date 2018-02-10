@@ -23,13 +23,14 @@ class LevelOne: SKScene, SKPhysicsContactDelegate, Alerts, SceneManager {
     var playerColor = "default"
     var spawnSpiderHealth = 2
     var spiderHealth = 2
+    var finalScore = 0
     
-    /*spider movement
-    let spiderRight = SKAction.moveBy(x: 50, y: 0, duration: 0.6)
-    let spiderLeft = SKAction.moveBy(x: -50, y: 0, duration: 0.6)
-    let spiderUp = SKAction.moveBy(x: 0, y: 50, duration: 0.6)
-    let spiderDown = SKAction.moveBy(x: 0, y: -50, duration: 0.6)
-    */
+    /*spider movement*/
+    let spiderRight = SKAction.moveBy(x: 35, y: 0, duration: 0.6)
+    let spiderLeft = SKAction.moveBy(x: -35, y: 0, duration: 0.6)
+    let spiderUp = SKAction.moveBy(x: 0, y: 35, duration: 0.6)
+    let spiderDown = SKAction.moveBy(x: 0, y: -35, duration: 0.6)
+ 
     
 //MARK: PLAYER PROPERTIES
     
@@ -47,6 +48,7 @@ class LevelOne: SKScene, SKPhysicsContactDelegate, Alerts, SceneManager {
     var hammerThree: SKSpriteNode?
     var hammerFour: SKSpriteNode?
     var hammerFive: SKSpriteNode?
+    var activeHammer = SKSpriteNode(imageNamed: "defaultActiveHammer")
     
     //initialize positions for player's HUD positions
     
@@ -67,8 +69,9 @@ class LevelOne: SKScene, SKPhysicsContactDelegate, Alerts, SceneManager {
     //Player's Health Properties
     var playerHealthCounter = 0
     var playerMaxHealth: Double = 100
-    var playerHealth: Double = 100
-    let healthBar = HealthBar(color: SKColor.red, size:CGSize(width:40, height:62))
+    public var playerHealth: Double = 100
+    let healthBar = HealthBar(color: SKColor.red, size:CGSize(width: 300, height: 5))
+    
     
     
     var playerAttacked = false
@@ -79,16 +82,19 @@ class LevelOne: SKScene, SKPhysicsContactDelegate, Alerts, SceneManager {
     var lvlExit: SKSpriteNode!
     public var nxtLvl = "LevelTwo"
     
+    public var score = 0
+    public var timeElapsed = 0
+    
     let startButton = SKSpriteNode(imageNamed: "startButton") //allows player to start game
     var shuffleButton = SKSpriteNode(imageNamed: "shuffleButton") //allows player to shuffle colors available
     
-    var highScoreLabel = SKLabelNode() //game's current highscore
+    public var highScoreLabel = SKLabelNode() //game's current highscore
     var highScore = UserDefaults().integer(forKey: "HIGHSCORE") //how we save highscore
     
     var startGame = false //determines if game is started
     
     public var waveLevel = 1 //tracks current wave level, increases difficult as waves are completed
-    var match = false //tracks whether or not a match has been made (set to false when touches begin, true on match collision)
+//    var match = false //tracks whether or not a match has been made (set to false when touches begin, true on match collision)
     var spotTaken: Int? //tracks if a player's card already exists in the current location disallowing spawn
     
     var pointsLabel: SKLabelNode? //player's score
@@ -101,16 +107,13 @@ class LevelOne: SKScene, SKPhysicsContactDelegate, Alerts, SceneManager {
     var levelTimerLabel = SKLabelNode(fontNamed: "ArialMT")
     
     //Immediately after leveTimerValue variable is set, update label's text
-    var levelTimerValue: Int = 500 {
+    public var levelTimerValue: Int = 0 {
         didSet {
-            levelTimerLabel.text = "Time left: \(levelTimerValue)"
+            levelTimerLabel.text = "Time: \(levelTimerValue)"
         }
     }
     
-    let spiderRight = SKAction.moveBy(x: 64, y: 0, duration: 0.6)
-    let spiderLeft = SKAction.moveBy(x: -64, y: 0, duration: 0.6)
-    let spiderUp = SKAction.moveBy(x: 0, y: 64, duration: 0.6)
-    let spiderDown = SKAction.moveBy(x: 0, y: -64, duration: 0.6)
+    
     
     let playerCamera = SKCameraNode()
     let playerLight = SKLightNode()
@@ -154,7 +157,7 @@ class LevelOne: SKScene, SKPhysicsContactDelegate, Alerts, SceneManager {
         let location = touch.location(in: self)
         let node = self.atPoint(location)
         
-        match = false //ensures that match is reset to false until a match is found
+     //   match = false //ensures that match is reset to false until a match is found
         
         if startGame == false {
             
@@ -208,16 +211,14 @@ class LevelOne: SKScene, SKPhysicsContactDelegate, Alerts, SceneManager {
         //Will probably need to update player here too as we build more complixity into the player's interactions
         if startGame == true {
             spiderWaveGenerator()
+            playerLight.position = player.position
+            if playerAttacked == false {
+                playerCamera.position = player.position
+            }
             
         }
         
-        playerLight.position = player.position
-        
-        if playerAttacked == false {
-            playerCamera.position = player.position
-        }
-        
-        if playerHealth < 1 || levelTimerValue < 1 {
+        if playerHealth < 1 {
             gameOver()
         }
         
@@ -229,23 +230,9 @@ class LevelOne: SKScene, SKPhysicsContactDelegate, Alerts, SceneManager {
     
     func setupGame() {
         
-//        //add start button
-//        startButton.position = CGPoint(x: 0.5, y: 5)
-//        startButton.zPosition = 100
-//        addChild(startButton)
-//
-//        //set highscorelabel
-//        highScoreLabel = SKLabelNode()
-//        highScoreLabel.text = "High Score = \(UserDefaults().integer(forKey: "HIGHSCORE"))"
-//        highScoreLabel.fontColor = SKColor.white
-//        highScoreLabel.fontName = "AvenirNext-Bold"
-//        highScoreLabel.fontSize = 30
-//        highScoreLabel.zPosition = 5
-//        highScoreLabel.position = CGPoint(x: 0, y: 200)
-//        addChild(highScoreLabel)
+        print("Current Wave: \(waveLevel)")
         
         //add player
-//        player.position = CGPoint(x: 0.5, y: -70)
         player = childNode(withName: "player") as! SKSpriteNode
         player.name = "hero"
         player.zPosition = 3
@@ -259,7 +246,6 @@ class LevelOne: SKScene, SKPhysicsContactDelegate, Alerts, SceneManager {
         player.lightingBitMask = 5
         player.shadowedBitMask = 0
         player.shadowCastBitMask = 0
-//        addChild(player)
         
         //add camera
         playerCamera.position = (player.position)
@@ -274,17 +260,14 @@ class LevelOne: SKScene, SKPhysicsContactDelegate, Alerts, SceneManager {
         playerLight.position = (player.position)
         playerLight.falloff = 2.0
         playerLight.lightColor = SKColor(red: 0.8, green: 0.8, blue: 0.8, alpha: 0.8)
-        //playerLight.shadowColor = SKColor(red: 0.3, green: 0.3, blue: 0.3, alpha: 0.8)
-       // playerLight.ambientColor = SKColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 0.0)
         playerLight.isEnabled = true
         playerLight.categoryBitMask = 5
         playerLight.zPosition = 100
         addChild(playerLight)
         
         //players health bar
-        //healthBar.position = CGPoint(x: player.position.x, y: (player.position.y + 30))
-        healthBar.position = CGPoint(x: -140, y: -169)
-        healthBar.zPosition = -1
+        healthBar.position = CGPoint(x: 0, y: -(frame.height/4))
+        healthBar.zPosition = 2
         playerHUD.addChild(healthBar)
         
         //add shuffle button
@@ -293,6 +276,12 @@ class LevelOne: SKScene, SKPhysicsContactDelegate, Alerts, SceneManager {
         shuffleButton.physicsBody?.isDynamic = false
         shuffleButton.zPosition = 2
         playerHUD.addChild(shuffleButton)
+        
+//        //add default active hammer
+//        activeHammer.texture = SKTexture(imageNamed: "defaultActiveHammer")
+//        activeHammer.position = CGPoint(x: (player.position.x + 25), y: (player.position.y + 10))
+//        activeHammer.zPosition = 2
+//        addChild(activeHammer)
         
         //add ScoreLabel
         pointsLabel = SKLabelNode()
@@ -332,8 +321,8 @@ class LevelOne: SKScene, SKPhysicsContactDelegate, Alerts, SceneManager {
         addChild(background)
         
         //Set the background
-        let playerHUDbackground = SKSpriteNode(imageNamed: "playerHUD")
-        playerHUDbackground.size = CGSize(width: 340, height: 250)
+        let playerHUDbackground = SKSpriteNode(imageNamed: "playerHUD2")
+        playerHUDbackground.size = CGSize(width: 340, height: 150)
         playerHUDbackground.position = CGPoint(x: 0.0, y: -250)
         playerHUDbackground.zPosition = 0
         playerHUD.addChild(playerHUDbackground)
@@ -364,11 +353,8 @@ class LevelOne: SKScene, SKPhysicsContactDelegate, Alerts, SceneManager {
         let block = SKAction.run({
             [unowned self] in
             
-            if self.levelTimerValue > 0{
-                self.levelTimerValue -= 1
-            }else{
-                self.removeAction(forKey: "countdown")
-            }
+            self.levelTimerValue += 1
+            
         })
         let sequence = SKAction.sequence([wait,block])
         
@@ -626,88 +612,44 @@ class LevelOne: SKScene, SKPhysicsContactDelegate, Alerts, SceneManager {
     }
     
     func updateSpider() {
-        
-        
+    
         if self.childNode(withName: "BlueSpider") != nil || self.childNode(withName: "GreenSpider") != nil || self.childNode(withName: "YellowSpider") != nil || self.childNode(withName: "OrangeSpider") != nil || self.childNode(withName: "PurpleSpider") != nil {
             
             for spider in spiders {
                 
+                
                 //Spider Speed
                 let spiderSpeed = CGFloat(20.0)
+                let dx = player.position.x - (spider.position.x)
+                let dy = player.position.y - (spider.position.y)
+                let angle = atan2(dy, dx)
+                spider.zRotation = angle
+                let vx = cos(angle) * spiderSpeed
+                let vy = sin(angle) * spiderSpeed
+                let spiderMove = SKAction.moveBy(x: vx, y: vy, duration: 0.6)
                 
-                
-                //Aim Spider
-                
-//                //Get Spider color so it Can Head to Proper Target
-//                switch spider.name {
-//                case "BlueSpider"? : let dx = (player.position.x) - (spider.position.y)
-//                let dy = (player.position.y) - (spider.position.y)
-//                let angle = atan2(dy, dx)
-//                spider.zRotation = angle
-//                let vx = cos(angle) * spiderSpeed
-//                let vy = sin(angle) * spiderSpeed
-//                spider.position.x += vx
-//                spider.position.y += vy
-//                case "GreenSpider"? : let dx = (player.position.x) - (spider.position.y)
-//                let dy = (player.position.y) - (spider.position.y)
-//                let angle = atan2(dy, dx)
-//                spider.zRotation = angle
-//                let vx = cos(angle) * spiderSpeed
-//                let vy = sin(angle) * spiderSpeed
-//                spider.position.x += vx
-//                spider.position.y += vy
-//                case "PurpleSpider"? : let dx = (player.position.x) - (spider.position.y)
-//                let dy = (player.position.y) - (spider.position.y)
-//                let angle = atan2(dy, dx)
-//                spider.zRotation = angle
-//                let vx = cos(angle) * spiderSpeed
-//                let vy = sin(angle) * spiderSpeed
-//                spider.position.x += vx
-//                spider.position.y += vy
-//                case "OrangeSpider"? : let dx = (player.position.x) - (spider.position.y)
-//                let dy = (player.position.y) - (spider.position.y)
-//                let angle = atan2(dy, dx)
-//                spider.zRotation = angle
-//                let vx = cos(angle) * spiderSpeed
-//                let vy = sin(angle) * spiderSpeed
-//                spider.position.x += vx
-//                spider.position.y += vy
-//                case "YellowSpider"? : let dx = (player.position.x) - (spider.position.y)
-//                let dy = (player.position.y) - (spider.position.y)
-//                let angle = atan2(dy, dx)
-//                spider.zRotation = angle
-//                let vx = cos(angle) * spiderSpeed
-//                let vy = sin(angle) * spiderSpeed
-//                spider.position.x += vx
-//                spider.position.y += vy
-//                default:
-//                    break
-//                }
-                
-                
-                
-                
-                                let dx = player.position.x - (spider.position.x)
-                                let dy = player.position.y - (spider.position.y)
-                
-                
-                                let angle = atan2(dy, dx)
-                                spider.zRotation = angle
-                                let vx = cos(angle) * spiderSpeed
-                                let vy = sin(angle) * spiderSpeed
-                
-                                let spiderMove = SKAction.moveBy(x: vx, y: vy, duration: 0.6)
-//                                spider.position.x += vx
-//                                spider.position.y += vy
-                                spider.run(spiderMove)
-                
-                //Seek
-                
-                
-                
-                
+                if dx < 50 && dy < 50 {
+                    spider.run(spiderMove)
+                } else {
+                    spider.run(randomSpiderMove())
+                }
             }
         }
+    }
+    
+    func randomSpiderMove() -> SKAction {
+        
+        //Creates an arrary of cards
+        let randomSpiderMoves = [spiderUp, spiderDown, spiderLeft, spiderRight]
+        
+        //picks a random card from the arrary
+        let randomSpiderMove = Int(arc4random_uniform(UInt32(randomSpiderMoves.count)))
+        
+        //renturs the random card to be used where this function is called.
+        //called in intiial hand setup and when a new card is created to replace a played card
+        return randomSpiderMoves[randomSpiderMove]
+        
+        
     }
     
     //MARK: GAMEPLAY METHODS
@@ -725,7 +667,10 @@ class LevelOne: SKScene, SKPhysicsContactDelegate, Alerts, SceneManager {
     
     func gameOver() {
         
-        if points > UserDefaults().integer(forKey: "HIGHSCORE") {
+        finalScore = (points * Int(playerHealth)) / (levelTimerValue / 10)
+        startGame = false
+        
+        if finalScore > UserDefaults().integer(forKey: "HIGHSCORE") {
             saveHighScore()
         }
         
@@ -733,7 +678,7 @@ class LevelOne: SKScene, SKPhysicsContactDelegate, Alerts, SceneManager {
         //let gameOver = GameOverScene(fileNamed: "GameOverScene")
         gameOver.scaleMode = .aspectFill
         gameOver.userData = NSMutableDictionary()
-        gameOver.userData?.setObject(points, forKey: "score" as NSCopying)
+        gameOver.userData?.setObject(finalScore, forKey: "score" as NSCopying)
         gameOver.userData?.setObject(highScore, forKey: "HS" as NSCopying)
         
         self.view?.presentScene(gameOver)
@@ -744,11 +689,13 @@ class LevelOne: SKScene, SKPhysicsContactDelegate, Alerts, SceneManager {
         
         // pass key for next level which is passed from didMove to view of previous level
         print("loading scene for \(nxtLvl)")
-        loadScene(withIdentifier: SceneIdentifier(rawValue: nxtLvl)!)
+//        loadScene(withIdentifier: SceneIdentifier(rawValue: nxtLvl)!)
+        
+        loadScene(withIdentifier: SceneIdentifier(rawValue: nxtLvl)!, currentScore: points, currentTime: levelTimerValue, currentPlayerHealth: playerHealth)
         
     }
     
-    func restartGame() {
+    public func restartGame() {
         
         //Clear Board State
         removeAllChildren()
@@ -760,13 +707,11 @@ class LevelOne: SKScene, SKPhysicsContactDelegate, Alerts, SceneManager {
         spawnAmount = 1
         removeAllActions()
         startGame = false
-        startingHand()
-        setupGame()
         
     }
     
     func saveHighScore() {
-        UserDefaults.standard.set(points, forKey: "HIGHSCORE")
+        UserDefaults.standard.set(finalScore, forKey: "HIGHSCORE")
     }
     
     func playerAttack(spider: SKSpriteNode, player: SKSpriteNode, color: String ) {
@@ -775,8 +720,14 @@ class LevelOne: SKScene, SKPhysicsContactDelegate, Alerts, SceneManager {
         
         if (spider.name?.contains(color))! {
             
-            let originalPlayerPosition = player.position
-            let originalSpiderPosition = spider.position
+            let dx = spider.position.x - (player.position.x)
+            let dy = spider.position.y - (player.position.y)
+            let angle = atan2(dy, dx)
+            player.zRotation = angle
+            let vx = cos(angle) * 1.5
+            let vy = sin(angle) * 1.5
+            let playerAttacks = SKAction.moveBy(x: vx, y: vy, duration: 0.2)
+            let spiderAttacks = SKAction.moveBy(x: -vx, y: -vy, duration: 0.2)
             
             //Player Attack!
             
@@ -785,11 +736,12 @@ class LevelOne: SKScene, SKPhysicsContactDelegate, Alerts, SceneManager {
                 spider.physicsBody?.collisionBitMask = 0
                 player.zPosition = 10
                 
-                let attackAnimation = SKAction.move(to: spider.position, duration: 0.2)
-                let attackReturn = SKAction.move(to: originalPlayerPosition, duration: 0.2)
-                let attackSequence = SKAction.sequence([attackAnimation, attackReturn])
+//                let attackAnimation = SKAction.move(to: spider.position, duration: 0.2)
+//                let attackReturn = SKAction.move(to: originalPlayerPosition, duration: 0.2)
+//                let attackSequence = SKAction.sequence([attackAnimation, attackReturn])
+
                 playerAttacked = true
-                player.run(attackSequence, completion: {
+                player.run(playerAttacks, completion: {
                     self.spawnSpiderHealth -= 2
                     attackTurn = 1
                     
@@ -804,7 +756,6 @@ class LevelOne: SKScene, SKPhysicsContactDelegate, Alerts, SceneManager {
                             self.spiderCountLabel.text = "Spiders Left: \(self.spiderCount)"
                            // self.isAttacking = false
                             self.pointsLabel?.text = "Score: \(self.points)"
-                            self.match = true
                             // advance to next wave
                             if self.spiderCount == 0 {
 //                                self.waveLevel += 1
@@ -831,14 +782,13 @@ class LevelOne: SKScene, SKPhysicsContactDelegate, Alerts, SceneManager {
                         //spider is alive - counter attack!
                         player.physicsBody?.collisionBitMask = 0
                         spider.zPosition = 10
-                        let attackAnimation = SKAction.move(to: player.position, duration: 0.2)
-                        let attackReturn = SKAction.move(to: originalSpiderPosition, duration: 0.2)
-                        let attackSequence = SKAction.sequence([attackAnimation, attackReturn])
+//                        let attackAnimation = SKAction.move(to: player.position, duration: 0.2)
+//                        let attackReturn = SKAction.move(to: originalSpiderPosition, duration: 0.2)
+//                        let attackSequence = SKAction.sequence([attackAnimation, attackReturn])
                         
-                        spider.run(attackSequence, completion: {
+                        spider.run(spiderAttacks, completion: {
                             self.playerHealth -= 10
                             attackTurn = 0
-                            
                             spider.zPosition = 2
                             player.physicsBody?.collisionBitMask = 1
                             spider.physicsBody?.collisionBitMask = 1

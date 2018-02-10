@@ -17,6 +17,13 @@ enum HammerType {
     purple
 }
 
+enum WaveLevels {
+    case one,
+    two,
+    three
+}
+
+
 
 
 

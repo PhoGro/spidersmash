@@ -15,7 +15,7 @@ class Spider : SKSpriteNode {
     let spiderType: SpiderType
     let frontTexture: SKTexture
     
-    var spiderHealth = 2
+    let spiderHealth = 2
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("NSCoding not supported")

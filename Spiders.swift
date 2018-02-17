@@ -10,11 +10,11 @@
 // collection of card types
 
 enum SpiderType {
-    case orangeSpider,
-    yellowSpider,
-    greenSpider,
-    blueSpider,
-    purpleSpider
+    case orangeSpider
+    case yellowSpider
+    case greenSpider
+    case blueSpider
+    case purpleSpider
 }
 
 

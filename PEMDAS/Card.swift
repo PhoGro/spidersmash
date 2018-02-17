@@ -14,6 +14,7 @@ class Hammer : SKSpriteNode {
     
     let hammerType: HammerType
     let frontTexture: SKTexture
+    let activeHammer: SKTexture
 
     required init?(coder aDecoder: NSCoder) {
         fatalError("NSCoding not supported")
@@ -27,14 +28,19 @@ class Hammer : SKSpriteNode {
         switch hammerType {
         case .orange:
             frontTexture = SKTexture(imageNamed: "Orange")
+            activeHammer = SKTexture(imageNamed: "defaultHammerRight")
         case .blue:
             frontTexture = SKTexture(imageNamed: "Blue")
+            activeHammer = SKTexture(imageNamed: "defaultHammerRight")
         case .yellow:
             frontTexture = SKTexture(imageNamed: "Yellow")
+            activeHammer = SKTexture(imageNamed: "defaultHammerRight")
         case .green:
             frontTexture = SKTexture(imageNamed: "Green")
+            activeHammer = SKTexture(imageNamed: "greenHammerRight")
         case .purple:
             frontTexture = SKTexture(imageNamed: "Purple")
+            activeHammer = SKTexture(imageNamed: "defaultHammerRight")
         }
     
         super.init(texture: frontTexture, color: .clear, size: frontTexture.size())

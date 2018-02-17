@@ -30,6 +30,7 @@
 		86CF44452023DD1000B75CC5 /* LevelThree.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86CF44442023DD1000B75CC5 /* LevelThree.swift */; };
 		86CF44482025380100B75CC5 /* MainMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86CF44472025380100B75CC5 /* MainMenu.swift */; };
 		86CF444A2025382C00B75CC5 /* MainMenu.sks in Resources */ = {isa = PBXBuildFile; fileRef = 86CF44492025382C00B75CC5 /* MainMenu.sks */; };
+		86CF444E2030A16200B75CC5 /* ActiveHammer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86CF444D2030A16200B75CC5 /* ActiveHammer.swift */; };
 		86FF44A51F48752D00E9053C /* Alerts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86FF44A41F48752D00E9053C /* Alerts.swift */; };
 /* End PBXBuildFile section */
 
@@ -59,6 +60,7 @@
 		86CF44442023DD1000B75CC5 /* LevelThree.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LevelThree.swift; sourceTree = "<group>"; };
 		86CF44472025380100B75CC5 /* MainMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainMenu.swift; sourceTree = "<group>"; };
 		86CF44492025382C00B75CC5 /* MainMenu.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = MainMenu.sks; sourceTree = "<group>"; };
+		86CF444D2030A16200B75CC5 /* ActiveHammer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActiveHammer.swift; sourceTree = "<group>"; };
 		86FF44A41F48752D00E9053C /* Alerts.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Alerts.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -77,6 +79,7 @@
 			isa = PBXGroup;
 			children = (
 				86063CFA1F4CD8D300E21751 /* Card.swift */,
+				86CF444D2030A16200B75CC5 /* ActiveHammer.swift */,
 				866AE5491FAD13E400C1BB6D /* Spider.swift */,
 				860B9F601FF423BE005E324A /* HeathBar.swift */,
 			);
@@ -248,6 +251,7 @@
 				86063D051F5633AD00E21751 /* HammerType.swift in Sources */,
 				860B9F5F1FEB5358005E324A /* GameOverScene.swift in Sources */,
 				86B80674200D5B4B0092A8E1 /* GameSetup.swift in Sources */,
+				86CF444E2030A16200B75CC5 /* ActiveHammer.swift in Sources */,
 				866AE5481FAD13B800C1BB6D /* Spiders.swift in Sources */,
 				86063CFB1F4CD8D300E21751 /* Card.swift in Sources */,
 				86FF44A51F48752D00E9053C /* Alerts.swift in Sources */,

@@ -21,8 +21,8 @@ class LevelOne: SKScene, SKPhysicsContactDelegate, Alerts, SceneManager {
     var spiderCount = 0 //tracks how many spiders are on the game board
     var isAttacking = false //determines if a spider is currently attacking
     var playerColor = "default"
-    var spawnSpiderHealth = 2
     var spiderHealth = 2
+    
     var finalScore = 0
     
     /*spider movement*/
@@ -48,7 +48,8 @@ class LevelOne: SKScene, SKPhysicsContactDelegate, Alerts, SceneManager {
     var hammerThree: SKSpriteNode?
     var hammerFour: SKSpriteNode?
     var hammerFive: SKSpriteNode?
-    var activeHammer = SKSpriteNode(imageNamed: "defaultActiveHammer")
+    var activeHammer = SKSpriteNode(imageNamed: "defaultHammerRight")
+    var hammerDirection = "HammerRight"
     
     //initialize positions for player's HUD positions
     
@@ -72,7 +73,8 @@ class LevelOne: SKScene, SKPhysicsContactDelegate, Alerts, SceneManager {
     public var playerHealth: Double = 100
     let healthBar = HealthBar(color: SKColor.red, size:CGSize(width: 300, height: 5))
     
-    
+    var PlayerDirection: String = "movingRight"
+    var ActiveHammer: String = "defaultActiveHammer"
     
     var playerAttacked = false
     
@@ -188,8 +190,11 @@ class LevelOne: SKScene, SKPhysicsContactDelegate, Alerts, SceneManager {
                 } else if cardNameComps?.count == 1 {
                     cardName = ""
                 }
-                selectedColor.texture = SKTexture(imageNamed: "\(cardName)")
+              //  selectedColor.texture = SKTexture(imageNamed: "\(cardName)")
                 playerColor = cardName
+                
+               // activeHammer.texture = SKTexture(imageNamed: "\(playerColor)"+"\(hammerDirection)")
+                
             }
         }
     }
@@ -216,11 +221,41 @@ class LevelOne: SKScene, SKPhysicsContactDelegate, Alerts, SceneManager {
                 playerCamera.position = player.position
             }
             
+            switch PlayerDirection {
+            case "movingRight" :
+                hammerDirection = "HammerRight"
+                activeHammer.texture = SKTexture(imageNamed: "\(playerColor)"+"\(hammerDirection)")
+                activeHammer.position = CGPoint(x: (player.position.x + 15), y: (player.position.y + 10))
+            case "movingLeft" :
+                hammerDirection = "HammerLeft"
+                activeHammer.texture = SKTexture(imageNamed: "\(playerColor)"+"\(hammerDirection)")
+                activeHammer.position = CGPoint(x: (player.position.x - 15), y: (player.position.y + 10))
+            case "movingDown" :
+                hammerDirection = "HammerDown"
+                activeHammer.texture = SKTexture(imageNamed: "\(playerColor)"+"\(hammerDirection)")
+                activeHammer.position = CGPoint(x: (player.position.x), y: (player.position.y - 20))
+            case "movingUp" :
+                hammerDirection = "HammerUp"
+                activeHammer.texture = SKTexture(imageNamed: "\(playerColor)"+"\(hammerDirection)")
+                activeHammer.position = CGPoint(x: (player.position.x), y: (player.position.y + 20))
+            default : break
+            }
+            
         }
         
         if playerHealth < 1 {
             gameOver()
         }
+        
+    }
+    
+    func activeHammer(direction: String, color: String) {
+        
+        
+        // directions - up, down, left, right
+        // colors - blue, green, yellow, orange, purple
+        
+        
         
     }
     
@@ -277,11 +312,11 @@ class LevelOne: SKScene, SKPhysicsContactDelegate, Alerts, SceneManager {
         shuffleButton.zPosition = 2
         playerHUD.addChild(shuffleButton)
         
-//        //add default active hammer
-//        activeHammer.texture = SKTexture(imageNamed: "defaultActiveHammer")
-//        activeHammer.position = CGPoint(x: (player.position.x + 25), y: (player.position.y + 10))
-//        activeHammer.zPosition = 2
-//        addChild(activeHammer)
+        //add default active hammer
+        activeHammer.position = CGPoint(x: (player.position.x + 15), y: (player.position.y + 10))
+        activeHammer.size = CGSize(width: player.size.width, height: player.size.height)
+        activeHammer.zPosition = 2
+        addChild(activeHammer)
         
         //add ScoreLabel
         pointsLabel = SKLabelNode()
@@ -304,10 +339,10 @@ class LevelOne: SKScene, SKPhysicsContactDelegate, Alerts, SceneManager {
         playerHUD.addChild(spiderCountLabel)
         
         //add selectedColor
-        selectedColor.position = CGPoint(x: 140, y: -169)
-        selectedColor.size = CGSize(width: 40, height: 62)
-        selectedColor.zPosition = -1
-        playerHUD.addChild(selectedColor)
+//        selectedColor.position = CGPoint(x: 140, y: -169)
+//        selectedColor.size = CGSize(width: 40, height: 62)
+//        selectedColor.zPosition = -1000
+//        playerHUD.addChild(selectedColor)
         
         //Set the background
         let background = SKSpriteNode(imageNamed: "background")
@@ -470,19 +505,22 @@ class LevelOne: SKScene, SKPhysicsContactDelegate, Alerts, SceneManager {
             case UISwipeGestureRecognizerDirection.right:
                 player.run(playerRight)
                 player.texture = SKTexture(imageNamed: "player-right")
-                //spiderMoves() - randomly moves spiders towards the player.
+                PlayerDirection = "movingRight"
                 updateSpider()
             case UISwipeGestureRecognizerDirection.down:
                 player.run(playerDown)
                 player.texture = SKTexture(imageNamed: "player-down")
+                PlayerDirection = "movingDown"
                 updateSpider()
             case UISwipeGestureRecognizerDirection.left:
                 player.run(playerLeft)
                 player.texture = SKTexture(imageNamed: "player-left")
+                PlayerDirection = "movingLeft"
                 updateSpider()
             case UISwipeGestureRecognizerDirection.up:
                 player.run(playerUp)
                 player.texture = SKTexture(imageNamed: "player-up")
+                PlayerDirection = "movingUp"
                 updateSpider()
             default:
                 break
@@ -548,7 +586,6 @@ class LevelOne: SKScene, SKPhysicsContactDelegate, Alerts, SceneManager {
             spawnSpider?.lightingBitMask = 5
             spawnSpider?.shadowedBitMask = 5
             spawnSpider?.shadowedBitMask = 5
-            spawnSpiderHealth = spiderHealth
             addChild(spawnSpider!)
             spiders.append(spawnSpider!)
             spiderCount += 1
@@ -714,97 +751,182 @@ class LevelOne: SKScene, SKPhysicsContactDelegate, Alerts, SceneManager {
         UserDefaults.standard.set(finalScore, forKey: "HIGHSCORE")
     }
     
-    func playerAttack(spider: SKSpriteNode, player: SKSpriteNode, color: String ) {
+//    func playerAttack(spider: SKSpriteNode, player: SKSpriteNode, color: String ) {
+//
+//        var attackTurn = 0
+//
+//        if (spider.name?.contains(color))! {
+//
+//            let dx = spider.position.x - (player.position.x)
+//            let dy = spider.position.y - (player.position.y)
+//            let angle = atan2(dy, dx)
+//            let vx = cos(angle) * 1.5
+//            let vy = sin(angle) * 1.5
+//            let playerAttacks = SKAction.moveBy(x: vx, y: vy, duration: 0.2)
+//         //   let spiderAttacks = SKAction.moveBy(x: -vx, y: -vy, duration: 0.2)
+//
+//            //Player Attack!
+//
+//            if spawnSpiderHealth > 0 && attackTurn % 2 == 0 {
+//
+//                spider.physicsBody?.collisionBitMask = 0
+//                player.zPosition = 10
+//                playerAttacked = true
+//
+//                player.run(playerAttacks, completion: {
+//                    self.spawnSpiderHealth -= 1
+//                    attackTurn = 1
+//
+//                        //spider dies
+//                        if self.spawnSpiderHealth <= 0 {
+//                            spider.removeFromParent()
+//                            player.removeAllActions()
+//                            self.bloodSplatter(pos: (spider.position))
+//                            self.points += 10
+//                            self.spiderCount -= 1
+//                            self.spiderCountLabel.text = "Spiders Left: \(self.spiderCount)"
+//                            self.pointsLabel?.text = "Score: \(self.points)"
+//                            // advance to next wave
+//                            if self.spiderCount == 0 {
+//                                self.lvlExit.color = .green
+//                                self.lvlExitOpen = true
+//                            }
+//                            attackTurn = 0
+//                        }
+//
+//                    //reset player's positining/physics body
+//                    player.zPosition = 3
+//                    spider.physicsBody?.collisionBitMask = 1
+//                    self.playerAttacked = false
+//
+//                })
+//
+//                //spider counter attack
+//                if attackTurn == 1 {
+//
+//                    if spawnSpiderHealth < 1 {
+//                        print("Spider is dead")
+//                    } else if spawnSpiderHealth > 0 {
+//                        //spider is alive - counter attack!
+//                        print("Counter Attack!")
+//                        spiderAttack(spider: spider, player: player, color: color)
+//                        attackTurn = 0
+////                        player.physicsBody?.collisionBitMask = 0
+////                        spider.zPosition = 10
+////
+////                        spider.run(spiderAttacks, completion: {
+////                            self.playerHealth -= 10
+////                            attackTurn = 0
+////                            spider.zPosition = 2
+////                            player.physicsBody?.collisionBitMask = 1
+////                            spider.physicsBody?.collisionBitMask = 1
+////                            self.playerAttacked = false
+////
+////                        })
+//                    }
+//                }
+//            }
+//        }
+//    }
+//
+//
+//    func spiderAttack(spider: SKSpriteNode, player: SKSpriteNode, color: String ) {
+//        player.removeAllActions()
+//        if (spider.name?.contains(color))! == false {
+//
+//            player.physicsBody?.collisionBitMask = 0
+//            spider.zPosition = 10
+//            let originalSpiderPosition = spider.position
+//
+//            let attackAnimation = SKAction.move(to: player.position, duration: 0.2)
+//            let attackReturn = SKAction.move(to: originalSpiderPosition, duration: 0.2)
+//            let attackSequence = SKAction.sequence([attackAnimation, attackReturn])
+//            spider.run(attackSequence, completion: {
+//                self.playerHealth -= 10
+//                player.physicsBody?.collisionBitMask = 1
+//            })
+//        } else if (spider.name?.contains(color))! == true {
+//
+//            player.physicsBody?.collisionBitMask = 0
+//            spider.zPosition = 10
+//            let originalSpiderPosition = spider.position
+//
+//            let attackAnimation = SKAction.move(to: player.position, duration: 0.2)
+//            let attackReturn = SKAction.move(to: originalSpiderPosition, duration: 0.2)
+//            let attackSequence = SKAction.sequence([attackAnimation, attackReturn])
+//            spider.run(attackSequence, completion: {
+//                self.playerHealth -= 10
+//                player.physicsBody?.collisionBitMask = 1
+//            })
+//        }
+//
+//        spider.zPosition = 2
+//
+//    }
+    
+    struct TouchInfo {
+        var location: CGPoint
+        var time: TimeInterval
+    }
+    
+    func combatStarts(spider: SKSpriteNode, player: SKSpriteNode, color: String) {
         
-        var attackTurn = 0
+        let player = player
+        let spider = spider
+        let color = color
         
+        let dx = spider.position.x - (player.position.x)
+        let dy = spider.position.y - (player.position.y)
+        let angle = atan2(dy, dx)
+        let vx = cos(angle) * 1.5
+        let vy = sin(angle) * 1.5
+        let playerAttacks = SKAction.moveBy(x: vx, y: vy, duration: 0.2)
+        
+        //Player Attacks Spider
         if (spider.name?.contains(color))! {
+            print("player is attacking")
+            playerAttacked = true
+            spiderHealth -= 2
             
-            let dx = spider.position.x - (player.position.x)
-            let dy = spider.position.y - (player.position.y)
-            let angle = atan2(dy, dx)
-            player.zRotation = angle
-            let vx = cos(angle) * 1.5
-            let vy = sin(angle) * 1.5
-            let playerAttacks = SKAction.moveBy(x: vx, y: vy, duration: 0.2)
-            let spiderAttacks = SKAction.moveBy(x: -vx, y: -vy, duration: 0.2)
+            spider.physicsBody?.collisionBitMask = 0
+            player.zPosition = 10
             
-            //Player Attack!
-            
-            if spawnSpiderHealth > 0 && attackTurn % 2 == 0 {
+            player.run(playerAttacks, completion: {
                 
-                spider.physicsBody?.collisionBitMask = 0
-                player.zPosition = 10
-                
-//                let attackAnimation = SKAction.move(to: spider.position, duration: 0.2)
-//                let attackReturn = SKAction.move(to: originalPlayerPosition, duration: 0.2)
-//                let attackSequence = SKAction.sequence([attackAnimation, attackReturn])
-
-                playerAttacked = true
-                player.run(playerAttacks, completion: {
-                    self.spawnSpiderHealth -= 2
-                    attackTurn = 1
-                    
-                        //spider dies
-                        if self.spawnSpiderHealth <= 0 {
-                            spider.removeFromParent()
-                            player.removeAllActions()
-                            self.spawnSpiderHealth = 2
-                            self.bloodSplatter(pos: (spider.position))
-                            self.points += 10
-                            self.spiderCount -= 1
-                            self.spiderCountLabel.text = "Spiders Left: \(self.spiderCount)"
-                           // self.isAttacking = false
-                            self.pointsLabel?.text = "Score: \(self.points)"
-                            // advance to next wave
-                            if self.spiderCount == 0 {
-//                                self.waveLevel += 1
-//                                self.spawnAmount = 1
-                                self.lvlExit.color = .green
-                                self.lvlExitOpen = true
-                            }
-                            attackTurn = 0
-                        }
+                //spider dies
+                if self.spiderHealth < 1 {
+                    spider.removeFromParent()
+                    player.removeAllActions()
+                    self.bloodSplatter(pos: (spider.position))
+                    self.points += 10
+                    self.spiderCount -= 1
+                    self.spiderCountLabel.text = "Spiders Left: \(self.spiderCount)"
+                    self.pointsLabel?.text = "Score: \(self.points)"
+                    // advance to next wave
+                    if self.spiderCount == 0 {
+                        self.lvlExit.color = .green
+                        self.lvlExitOpen = true
+                    }
+                    self.playerAttacked = false
+                }
                 
                 //reset player's positining/physics body
                 player.zPosition = 3
                 spider.physicsBody?.collisionBitMask = 1
-                    self.playerAttacked = false
                 
-                })
-                
-                //spider counter attack
-                if attackTurn % 2 != 0 {
-                    
-                    if spiderHealth < 1 {
-                        print("Spider is dead")
-                    } else if spiderHealth > 0 {
-                        //spider is alive - counter attack!
-                        player.physicsBody?.collisionBitMask = 0
-                        spider.zPosition = 10
-//                        let attackAnimation = SKAction.move(to: player.position, duration: 0.2)
-//                        let attackReturn = SKAction.move(to: originalSpiderPosition, duration: 0.2)
-//                        let attackSequence = SKAction.sequence([attackAnimation, attackReturn])
-                        
-                        spider.run(spiderAttacks, completion: {
-                            self.playerHealth -= 10
-                            attackTurn = 0
-                            spider.zPosition = 2
-                            player.physicsBody?.collisionBitMask = 1
-                            spider.physicsBody?.collisionBitMask = 1
-                            self.playerAttacked = false
-                            
-                        })
-                    }
-                }
+            })
+            
+            //Spider Counters Player
+            if playerAttacked == true && spiderHealth > 0 {
+                print("sider can counter attack")
+                playerAttacked = false
             }
+            
         }
-    }
-    
-    
-    func spiderAttack(spider: SKSpriteNode, player: SKSpriteNode, color: String ) {
-        player.removeAllActions()
+        
+        //Spider Attacks Player
         if (spider.name?.contains(color))! == false {
+            print("spider is attacking")
             
             player.physicsBody?.collisionBitMask = 0
             spider.zPosition = 10
@@ -820,17 +942,8 @@ class LevelOne: SKScene, SKPhysicsContactDelegate, Alerts, SceneManager {
         }
         
         spider.zPosition = 2
-        
-    }
-    
-    struct TouchInfo {
-        var location: CGPoint
-        var time: TimeInterval
-    }
-    
-    
-    
-
+            
+}
     
 //MARK: GAME PHYSICS
     
@@ -869,13 +982,17 @@ class LevelOne: SKScene, SKPhysicsContactDelegate, Alerts, SceneManager {
             var cardName = "default"
             cardName = playerColor
             print("CardName: \(cardName)")
-            if (spider.name?.contains(cardName))! {
-                print("player Attack!")
-                playerAttack(spider: spider, player: player, color: cardName)
-            } else {
-                print("spider Attack!")
-                spiderAttack(spider: spider, player: player, color: cardName)
-            }
+            
+            //combat
+            combatStarts(spider: spider, player: player, color: cardName)
+            
+//            if (spider.name?.contains(cardName))! {
+//                print("player Attack!")
+//                playerAttack(spider: spider, player: player, color: cardName)
+//            } else {
+//                print("spider Attack!")
+//                spiderAttack(spider: spider, player: player, color: cardName)
+//            }
             
             
         } else if (firstBody.node?.name?.contains("lvlExit"))! && (secondBody.node?.name?.contains("hero"))!  {
@@ -899,5 +1016,3 @@ extension CGPoint {
         return abs(CGFloat(hypotf(Float(point.x - x), Float(point.y - y))))
     }
 }
-
-

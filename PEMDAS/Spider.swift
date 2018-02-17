@@ -14,8 +14,7 @@ class Spider : SKSpriteNode {
     
     let spiderType: SpiderType
     let frontTexture: SKTexture
-    
-    let spiderHealth = 2
+    public var spiderHealth: Int
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("NSCoding not supported")
@@ -28,14 +27,19 @@ class Spider : SKSpriteNode {
         switch spiderType {
         case .orangeSpider:
             frontTexture = SKTexture(imageNamed: "OrangeSpider")
+            spiderHealth = 2
         case .blueSpider:
             frontTexture = SKTexture(imageNamed: "BlueSpider")
+            spiderHealth = 2
         case .yellowSpider:
             frontTexture = SKTexture(imageNamed: "YellowSpider")
+            spiderHealth = 2
         case .greenSpider:
             frontTexture = SKTexture(imageNamed: "GreenSpider")
+            spiderHealth = 2
         case .purpleSpider:
             frontTexture = SKTexture(imageNamed: "PurpleSpider")
+            spiderHealth = 2
         }
         
     
@@ -46,4 +50,3 @@ class Spider : SKSpriteNode {
     }
     
 }
-

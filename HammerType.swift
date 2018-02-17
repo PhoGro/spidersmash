@@ -17,10 +17,12 @@ enum HammerType {
     purple
 }
 
-enum WaveLevels {
-    case one,
-    two,
-    three
+enum ActiveHammers {
+    case yellowRight, yellowUp, yellowDown, yellowLeft,
+    blueUp, blueDown, blueRight, blueLeft,
+    greenUp, greenDown, greenRight, greenLeft,
+    orangeUp, orangeDown, orangeRight, orangeLeft,
+    purpleUp, purpleDown, purpleRight, purpleLeft
 }
 
 

@@ -7,15 +7,23 @@
 //
 
 import SpriteKit
-import UIKit
+
+enum SpiderType {
+    case orangeSpider
+    case yellowSpider
+    case greenSpider
+    case blueSpider
+    case purpleSpider
+}
 
 
 class Spider : SKSpriteNode {
     
     let spiderType: SpiderType
     let frontTexture: SKTexture
-    public var spiderHealth: Int
-    
+    var spiderHealth: Int = 0
+    var spiderMaxHealth: Int = 0
+ 
     required init?(coder aDecoder: NSCoder) {
         fatalError("NSCoding not supported")
     }
@@ -27,22 +35,24 @@ class Spider : SKSpriteNode {
         switch spiderType {
         case .orangeSpider:
             frontTexture = SKTexture(imageNamed: "OrangeSpider")
-            spiderHealth = 2
+            spiderMaxHealth = 2
         case .blueSpider:
             frontTexture = SKTexture(imageNamed: "BlueSpider")
-            spiderHealth = 2
+            spiderMaxHealth = 2
         case .yellowSpider:
             frontTexture = SKTexture(imageNamed: "YellowSpider")
-            spiderHealth = 2
+            spiderMaxHealth = 2
         case .greenSpider:
             frontTexture = SKTexture(imageNamed: "GreenSpider")
-            spiderHealth = 2
+            spiderMaxHealth = 2
         case .purpleSpider:
             frontTexture = SKTexture(imageNamed: "PurpleSpider")
-            spiderHealth = 2
+            spiderMaxHealth = 2
         }
         
     
+        
+        
         super.init(texture: frontTexture, color: .clear, size: frontTexture.size())
         
         

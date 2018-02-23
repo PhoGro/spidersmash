@@ -15,7 +15,7 @@ class LevelOne: SKScene, SKPhysicsContactDelegate, Alerts, SceneManager {
 //MARK: SPIDER PROPERTIES
     var spider: SKSpriteNode?
     var spawnPositions = [CGPoint]() //contains an arrary of dzPOS above
-    var spawnSpider: SKSpriteNode? //temp SKSpriteNode for spawning spiders
+    var spawnSpider: Spider? //temp SKSpriteNode for spawning spiders
     var spawnAmount = 1 //tracks how many spiders to spawn at a time
     var spiders: [SKSpriteNode] = [] //an arrary of all spawned spiders
     var spiderCount = 0 //tracks how many spiders are on the game board
@@ -83,6 +83,8 @@ class LevelOne: SKScene, SKPhysicsContactDelegate, Alerts, SceneManager {
     var lvlExitOpen = false
     var lvlExit: SKSpriteNode!
     public var nxtLvl = "LevelTwo"
+    
+    var heart: SKSpriteNode!
     
     public var score = 0
     public var timeElapsed = 0
@@ -267,6 +269,7 @@ class LevelOne: SKScene, SKPhysicsContactDelegate, Alerts, SceneManager {
         
         print("Current Wave: \(waveLevel)")
         
+        
         //add player
         player = childNode(withName: "player") as! SKSpriteNode
         player.name = "hero"
@@ -376,6 +379,7 @@ class LevelOne: SKScene, SKPhysicsContactDelegate, Alerts, SceneManager {
         lvlExit.lightingBitMask = 5
         lvlExit.shadowedBitMask = 5
         lvlExit.shadowCastBitMask = 5
+        
         
         levelTimerLabel.fontColor = SKColor.green
         levelTimerLabel.fontSize = 12
@@ -491,6 +495,15 @@ class LevelOne: SKScene, SKPhysicsContactDelegate, Alerts, SceneManager {
         
     }
     
+    func gainLife() {
+
+        if playerMaxHealth - playerHealth > 25 {
+            playerHealth = playerHealth + 25
+        } else {
+            playerHealth = playerMaxHealth
+        }
+    }
+    
     func updatePlayer(touchLocation: CGPoint) {
         
 
@@ -560,6 +573,7 @@ class LevelOne: SKScene, SKPhysicsContactDelegate, Alerts, SceneManager {
         greenSpider.name = "GreenSpider"
         purpleSpider.name = "PurpleSpider"
         
+        
         //Creates an arrary of cards
         let spiders = [yellowSpider, blueSpider, orangeSpider, greenSpider, purpleSpider]
         
@@ -574,7 +588,9 @@ class LevelOne: SKScene, SKPhysicsContactDelegate, Alerts, SceneManager {
     func spawnSpiders() {
         // this function spawns spiders
         
-            spawnSpider = createSpider()
+            spawnSpider = createSpider() as? Spider
+            spawnSpider?.spiderMaxHealth = 2
+            spawnSpider?.spiderHealth = 2
             spawnSpider?.position = spiderSpawnPosition()
             spawnSpider?.zPosition = 2
             spawnSpider?.physicsBody = SKPhysicsBody(rectangleOf: (spawnSpider?.size)!)
@@ -689,6 +705,34 @@ class LevelOne: SKScene, SKPhysicsContactDelegate, Alerts, SceneManager {
         
     }
     
+    func playerDamage() -> Int {
+        
+        var randomDamage = Int(arc4random_uniform(3)+1)
+        
+        let blockChance = Int(arc4random_uniform(100)+1)
+        
+        if blockChance < 10 {
+            randomDamage = 0
+        }
+        
+        return randomDamage
+        
+    }
+    
+    func spiderDamage() -> Int {
+        
+        var randomDamage = Int(arc4random_uniform(10)+1)
+        
+        let blockChance = Int(arc4random_uniform(100)+1)
+        
+        if blockChance < 10 {
+            randomDamage = 0
+        }
+        
+        return randomDamage
+        
+    }
+    
     //MARK: GAMEPLAY METHODS
     
     func bloodSplatter(pos: CGPoint) {
@@ -701,6 +745,25 @@ class LevelOne: SKScene, SKPhysicsContactDelegate, Alerts, SceneManager {
         addChild(bloodSplat)
         
     }
+    
+    func hammerAnimations(direction: String) {
+        
+        let direction = direction
+        
+        let hitAnimation = SKAction.rotate(byAngle: 90, duration: 0.1)
+        let hitAnimationReturn = SKAction.rotate(byAngle: -90, duration: 0.1)
+        let hitAnimationSequence = SKAction.sequence([hitAnimation, hitAnimationReturn])
+        
+        switch direction {
+            case "movingRight" : activeHammer.run(hitAnimationSequence)
+            case "movingLeft" : activeHammer.run(hitAnimationSequence)
+            case "movingDown" : activeHammer.run(hitAnimationSequence)
+            case "movingUp" : activeHammer.run(hitAnimationSequence)
+            default : break
+        }
+        
+    }
+    
     
     func gameOver() {
         
@@ -751,6 +814,247 @@ class LevelOne: SKScene, SKPhysicsContactDelegate, Alerts, SceneManager {
         UserDefaults.standard.set(finalScore, forKey: "HIGHSCORE")
     }
     
+    func damageAnimationCounter(position: CGPoint) -> SKLabelNode {
+        
+        let damageLabel = SKLabelNode()
+        let position = CGPoint(x: position.x, y: position.y + 40)
+        
+        damageLabel.fontSize = 18
+        damageLabel.fontColor = SKColor.white
+        damageLabel.fontName = "Futura-CondensedExtraBold"
+        damageLabel.position = position
+        damageLabel.zPosition = 1500
+        damageLabel.name = "damageLabel"
+        
+        return damageLabel
+        
+    }
+    
+    struct TouchInfo {
+        var location: CGPoint
+        var time: TimeInterval
+    }
+    
+    func combatStarts(spider: SKSpriteNode, player: SKSpriteNode, color: String) {
+        
+        let player = player
+        let spider = spider as? Spider
+        let color = color
+        
+        let dx = (spider?.position.x)! - (player.position.x)
+        let dy = (spider?.position.y)! - (player.position.y)
+        let angle = atan2(dy, dx)
+        let vx = cos(angle) * 1.5
+        let vy = sin(angle) * 1.5
+        let playerAttacks = SKAction.moveBy(x: vx, y: vy, duration: 0.2)
+        let spiderAttacks = SKAction.moveBy(x: -vx, y: -vy, duration: 0.2)
+        let wait = SKAction.wait(forDuration: 0.2)
+        let hitAnimation = SKEmitterNode(fileNamed: "GreenScatter")
+        
+        //Player Attacks Spider
+        if (spider?.name?.contains(color))! {
+            print("player is attacking")
+            playerAttacked = true
+            let attackDamage = playerDamage()
+            let damage = damageAnimationCounter(position: spider!.position)
+            
+            spider?.physicsBody?.collisionBitMask = 0
+            player.zPosition = 10
+            
+            player.run(playerAttacks, completion: {
+                self.hammerAnimations(direction: self.PlayerDirection)
+                let hitAn = hitAnimation
+                hitAn?.position = (spider?.position)!
+                self.addChild((hitAn)!)
+                hitAn?.run(wait, completion: {hitAn?.removeFromParent()})
+                
+                if attackDamage == 0 {
+                    print("BLOCKED")
+                    damage.text = "BLOCK"
+                    damage.fontColor = SKColor.blue
+                    self.addChild(damage)
+                    damage.run(SKAction.moveBy(x: -5, y: 15, duration: 0.3), completion: {damage.run(SKAction.fadeOut(withDuration: 0.7), completion: { damage.removeFromParent()})})
+                    
+                    
+                } else {
+                    spider?.spiderHealth -= attackDamage
+                    damage.text = "\(attackDamage)"
+                    damage.fontColor = SKColor.white
+                    self.addChild(damage)
+                    damage.run(SKAction.moveBy(x: -5, y: 15, duration: 0.3), completion: {damage.run(SKAction.fadeOut(withDuration: 0.7), completion: { damage.removeFromParent()})})
+                }
+                
+                //if spider dies
+                if (spider?.spiderHealth)! < 1 {
+                    spider?.removeFromParent()
+                    player.removeAllActions()
+                    self.bloodSplatter(pos: (spider?.position)!)
+                    self.points += 10
+                    self.spiderCount -= 1
+                    self.spiderCountLabel.text = "Spiders Left: \(self.spiderCount)"
+                    self.pointsLabel?.text = "Score: \(self.points)"
+                    // advance to next wave
+                    if self.spiderCount == 0 {
+                        self.lvlExit.color = .green
+                        self.lvlExitOpen = true
+                    }
+                    self.playerAttacked = false
+                    //reset player's positining/physics body
+                    player.zPosition = 3
+                    spider?.physicsBody?.collisionBitMask = 1
+                    //if spider is still alive
+                } else if self.playerAttacked == true && spider!.spiderHealth > 0 {
+                    print("sider can counter attack")
+                    player.zPosition = 3
+                    spider?.physicsBody?.collisionBitMask = 1
+                    player.physicsBody?.collisionBitMask = 0
+                    spider?.zPosition = 10
+                    
+                    spider?.run(spiderAttacks, completion: {
+                        
+                        let spiderAttackDamage = self.spiderDamage()
+                        let damage = self.damageAnimationCounter(position: player.position)
+                        
+                        if spiderAttackDamage == 0 {
+                            print("BLOCKED")
+                            damage.text = "BLOCK"
+                            damage.fontColor = SKColor.green
+                            self.addChild(damage)
+                            damage.run(SKAction.moveBy(x: 5, y: 15, duration: 0.3), completion: {damage.run(SKAction.fadeOut(withDuration: 0.7), completion: { damage.removeFromParent()})})
+                            
+                            
+                        } else {
+                            self.playerHealth -= Double(spiderAttackDamage)
+                            damage.text = "\(spiderAttackDamage)"
+                            damage.fontColor = SKColor.red
+                            self.addChild(damage)
+                            damage.run(SKAction.moveBy(x: 5, y: 15, duration: 0.3), completion: {damage.run(SKAction.fadeOut(withDuration: 0.7), completion: { damage.removeFromParent()})})
+                        }
+                        
+                        
+                        player.physicsBody?.collisionBitMask = 1
+                        
+                        
+                    })
+                    
+                    spider?.zPosition = 2
+                    self.playerAttacked = false
+                    
+                }
+                
+            })
+            
+        }
+            
+        
+    
+        //Spider Attacks Player
+        if (spider?.name?.contains(color))! == false {
+            print("spider is attacking")
+            
+            player.physicsBody?.collisionBitMask = 0
+            spider?.zPosition = 10
+            
+            spider?.run(spiderAttacks, completion: {
+                let spiderAttackDamage = self.spiderDamage()
+                let damage = self.damageAnimationCounter(position: player.position)
+                
+                if spiderAttackDamage == 0 {
+                    print("BLOCKED")
+                    damage.text = "BLOCK"
+                    damage.fontColor = SKColor.green
+                    self.addChild(damage)
+                    damage.run(SKAction.moveBy(x: 0, y: 10, duration: 0.3), completion: {damage.run(SKAction.fadeOut(withDuration: 0.7), completion: { damage.removeFromParent()})})
+                    
+                    
+                } else {
+                    self.playerHealth -= Double(spiderAttackDamage)
+                    damage.text = "\(spiderAttackDamage)"
+                    damage.fontColor = SKColor.red
+                    self.addChild(damage)
+                    damage.run(SKAction.moveBy(x: 0, y: 10, duration: 0.3), completion: {damage.run(SKAction.fadeOut(withDuration: 0.7), completion: { damage.removeFromParent()})})
+                }
+                
+                
+                player.physicsBody?.collisionBitMask = 1
+            })
+            
+            spider?.zPosition = 2
+        }
+    }
+    
+//MARK: GAME PHYSICS
+    
+    public func didBegin(_ contact: SKPhysicsContact) {
+        // 1. Create local variables for two physics bodies
+        var firstBody: SKPhysicsBody
+        var secondBody: SKPhysicsBody
+        
+        // 2. Assign the two physics bodies so that the one with the
+        // lower category is always stored in firstBody
+        
+        /* category bit masks
+         
+         spiders - 3
+         cards - 1
+         spider target - 2
+ 
+         */
+        
+        if contact.bodyA.categoryBitMask < contact.bodyB.categoryBitMask {
+            firstBody = contact.bodyA
+            secondBody = contact.bodyB
+        } else {
+            firstBody = contact.bodyB
+            secondBody = contact.bodyA
+        }
+        
+        if (firstBody.node?.name?.contains("Spider"))! && (secondBody.node?.name?.contains("hero"))! {
+            
+            //combat has started - how do we handle this interaction?
+            
+            //Spider is the firstbody and player is secondBody
+            
+            let spider = firstBody.node as! SKSpriteNode
+            let player = secondBody.node as! SKSpriteNode
+            var cardName = "default"
+            cardName = playerColor
+            print("CardName: \(cardName)")
+            
+            combatStarts(spider: spider, player: player, color: cardName)
+            
+        } else if (firstBody.node?.name?.contains("lvlExit"))! && (secondBody.node?.name?.contains("hero"))!  {
+            if lvlExitOpen == false {
+                print("Kill more spiders")
+            } else if lvlExitOpen == true {
+                print("Advance to next level")
+                if nxtLvl != "GameOver" {
+                    goTo(nextLevel: SceneIdentifier(rawValue: nxtLvl)!)
+                } else if nxtLvl == "GameOver" {
+                    gameOver()
+                }
+
+            }
+        } else if (firstBody.node?.name?.contains("heart"))! && (secondBody.node?.name?.contains("hero"))!  {
+            
+                let heartAnimation = SKEmitterNode(fileNamed: "heart")
+                heartAnimation?.position = (firstBody.node!.position)
+                self.addChild((heartAnimation)!)
+                heartAnimation?.run(SKAction.wait(forDuration: 0.3), completion: {heartAnimation?.removeFromParent()})
+                gainLife()
+                firstBody.node?.removeFromParent()
+                
+        }
+    }
+}
+
+extension CGPoint {
+    func distance(point: CGPoint) -> CGFloat {
+        return abs(CGFloat(hypotf(Float(point.x - x), Float(point.y - y))))
+    }
+}
+
+
 //    func playerAttack(spider: SKSpriteNode, player: SKSpriteNode, color: String ) {
 //
 //        var attackTurn = 0
@@ -863,156 +1167,3 @@ class LevelOne: SKScene, SKPhysicsContactDelegate, Alerts, SceneManager {
 //        spider.zPosition = 2
 //
 //    }
-    
-    struct TouchInfo {
-        var location: CGPoint
-        var time: TimeInterval
-    }
-    
-    func combatStarts(spider: SKSpriteNode, player: SKSpriteNode, color: String) {
-        
-        let player = player
-        let spider = spider
-        let color = color
-        
-        let dx = spider.position.x - (player.position.x)
-        let dy = spider.position.y - (player.position.y)
-        let angle = atan2(dy, dx)
-        let vx = cos(angle) * 1.5
-        let vy = sin(angle) * 1.5
-        let playerAttacks = SKAction.moveBy(x: vx, y: vy, duration: 0.2)
-        
-        //Player Attacks Spider
-        if (spider.name?.contains(color))! {
-            print("player is attacking")
-            playerAttacked = true
-            spiderHealth -= 2
-            
-            spider.physicsBody?.collisionBitMask = 0
-            player.zPosition = 10
-            
-            player.run(playerAttacks, completion: {
-                
-                //spider dies
-                if self.spiderHealth < 1 {
-                    spider.removeFromParent()
-                    player.removeAllActions()
-                    self.bloodSplatter(pos: (spider.position))
-                    self.points += 10
-                    self.spiderCount -= 1
-                    self.spiderCountLabel.text = "Spiders Left: \(self.spiderCount)"
-                    self.pointsLabel?.text = "Score: \(self.points)"
-                    // advance to next wave
-                    if self.spiderCount == 0 {
-                        self.lvlExit.color = .green
-                        self.lvlExitOpen = true
-                    }
-                    self.playerAttacked = false
-                }
-                
-                //reset player's positining/physics body
-                player.zPosition = 3
-                spider.physicsBody?.collisionBitMask = 1
-                
-            })
-            
-            //Spider Counters Player
-            if playerAttacked == true && spiderHealth > 0 {
-                print("sider can counter attack")
-                playerAttacked = false
-            }
-            
-        }
-        
-        //Spider Attacks Player
-        if (spider.name?.contains(color))! == false {
-            print("spider is attacking")
-            
-            player.physicsBody?.collisionBitMask = 0
-            spider.zPosition = 10
-            let originalSpiderPosition = spider.position
-            
-            let attackAnimation = SKAction.move(to: player.position, duration: 0.2)
-            let attackReturn = SKAction.move(to: originalSpiderPosition, duration: 0.2)
-            let attackSequence = SKAction.sequence([attackAnimation, attackReturn])
-            spider.run(attackSequence, completion: {
-                self.playerHealth -= 10
-                player.physicsBody?.collisionBitMask = 1
-            })
-        }
-        
-        spider.zPosition = 2
-            
-}
-    
-//MARK: GAME PHYSICS
-    
-    public func didBegin(_ contact: SKPhysicsContact) {
-        // 1. Create local variables for two physics bodies
-        var firstBody: SKPhysicsBody
-        var secondBody: SKPhysicsBody
-        
-        // 2. Assign the two physics bodies so that the one with the
-        // lower category is always stored in firstBody
-        
-        /* category bit masks
-         
-         spiders - 3
-         cards - 1
-         spider target - 2
- 
-         */
-        
-        if contact.bodyA.categoryBitMask < contact.bodyB.categoryBitMask {
-            firstBody = contact.bodyA
-            secondBody = contact.bodyB
-        } else {
-            firstBody = contact.bodyB
-            secondBody = contact.bodyA
-        }
-        
-        if (firstBody.node?.name?.contains("Spider"))! && (secondBody.node?.name?.contains("hero"))! {
-            
-            //combat has started - how do we handle this interaction?
-            
-            //Spider is the firstbody and player is secondBody
-            
-            let spider = firstBody.node as! SKSpriteNode
-            let player = secondBody.node as! SKSpriteNode
-            var cardName = "default"
-            cardName = playerColor
-            print("CardName: \(cardName)")
-            
-            //combat
-            combatStarts(spider: spider, player: player, color: cardName)
-            
-//            if (spider.name?.contains(cardName))! {
-//                print("player Attack!")
-//                playerAttack(spider: spider, player: player, color: cardName)
-//            } else {
-//                print("spider Attack!")
-//                spiderAttack(spider: spider, player: player, color: cardName)
-//            }
-            
-            
-        } else if (firstBody.node?.name?.contains("lvlExit"))! && (secondBody.node?.name?.contains("hero"))!  {
-            if lvlExitOpen == false {
-                print("Kill more spiders")
-            } else if lvlExitOpen == true {
-                print("Advance to next level")
-                if nxtLvl != "GameOver" {
-                    goTo(nextLevel: SceneIdentifier(rawValue: nxtLvl)!)
-                } else if nxtLvl == "GameOver" {
-                    gameOver()
-                }
-
-            }
-        }
-    }
-}
-
-extension CGPoint {
-    func distance(point: CGPoint) -> CGFloat {
-        return abs(CGFloat(hypotf(Float(point.x - x), Float(point.y - y))))
-    }
-}

@@ -7,7 +7,14 @@
 //
 
 import SpriteKit
-import UIKit
+
+enum HammerType {
+    case orange,
+    yellow,
+    green,
+    blue,
+    purple
+}
 
 
 class Hammer : SKSpriteNode {

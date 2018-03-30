@@ -23,6 +23,12 @@ class Spider : SKSpriteNode {
     let frontTexture: SKTexture
     var spiderHealth: Int = 0
     var spiderMaxHealth: Int = 0
+    var spiderAttacking: Bool = false
+    var spiderCoolDown: Bool = false
+    var spiderCoolDownStarted: Bool = false
+    var spiderCoolDownCounter: Int = 5
+    var spiderAction: String = ""
+    var moving: Bool = false
  
     required init?(coder aDecoder: NSCoder) {
         fatalError("NSCoding not supported")
@@ -35,19 +41,39 @@ class Spider : SKSpriteNode {
         switch spiderType {
         case .orangeSpider:
             frontTexture = SKTexture(imageNamed: "OrangeSpider")
-            spiderMaxHealth = 2
+            spiderMaxHealth = 8
+            spiderHealth = 8
+            spiderAttacking = false
+            spiderCoolDown = false
+            spiderCoolDownStarted = false
         case .blueSpider:
             frontTexture = SKTexture(imageNamed: "BlueSpider")
-            spiderMaxHealth = 2
+            spiderMaxHealth = 6
+            spiderHealth = 6
+            spiderAttacking = false
+            spiderCoolDown = false
+            spiderCoolDownStarted = false
         case .yellowSpider:
             frontTexture = SKTexture(imageNamed: "YellowSpider")
-            spiderMaxHealth = 2
+            spiderMaxHealth = 4
+            spiderHealth = 4
+            spiderAttacking = false
+            spiderCoolDown = false
+            spiderCoolDownStarted = false
         case .greenSpider:
             frontTexture = SKTexture(imageNamed: "GreenSpider")
-            spiderMaxHealth = 2
+            spiderMaxHealth = 5
+            spiderHealth = 5
+            spiderAttacking = false
+            spiderCoolDown = false
+            spiderCoolDownStarted = false
         case .purpleSpider:
             frontTexture = SKTexture(imageNamed: "PurpleSpider")
-            spiderMaxHealth = 2
+            spiderMaxHealth = 4
+            spiderHealth = 4
+            spiderAttacking = false
+            spiderCoolDown = false
+            spiderCoolDownStarted = false
         }
         
     

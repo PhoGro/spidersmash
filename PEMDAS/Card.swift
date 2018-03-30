@@ -9,11 +9,20 @@
 import SpriteKit
 
 enum HammerType {
-    case orange,
-    yellow,
-    green,
-    blue,
-    purple
+    case orange, // #f8941e
+    yellow, // #f9f734
+    green, // #0ef929
+    blue, // #4d83f2
+    purple // #a94df7
+}
+
+enum contactType {
+    case playerAttackSpider,
+    playerGetsHeart,
+    playerExitsLevel,
+    spiderAttacksPlayer,
+    spiderProjectileHitsPlayer,
+    spiderProjectileHitsWall
 }
 
 

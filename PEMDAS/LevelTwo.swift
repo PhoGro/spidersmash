@@ -9,7 +9,7 @@
 import SpriteKit
 import GameplayKit
 
-class LevelTwo: LevelOne {
+class LevelTwo: CoreGame {
     
     override init(size: CGSize) {
         super.init(size: size)
@@ -31,6 +31,8 @@ class LevelTwo: LevelOne {
         
         timeElapsed = self.userData?.value(forKey: "LTV") as! Int
         levelTimerValue = timeElapsed
+        
+        spidersSmashedCount = self.userData?.value(forKey: "spidersSmashed") as! Int
         
         playerHealth = self.userData?.value(forKey: "playerHealth") as! Double
         

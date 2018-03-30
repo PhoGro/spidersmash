@@ -43,17 +43,6 @@ class MainMenu: SKScene, SceneManager {
             
         }
         
-        
-//        let transition = SKTransition.flipVertical(withDuration: 0.5)
-//        if let gameScene = SKScene(fileNamed: "GameScene") {
-//            
-//            gameScene.userData = NSMutableDictionary()
-//            gameScene.scaleMode = .aspectFill
-//            
-//            view?.presentScene(gameScene, transition: transition)
-//            
-//        }
-        
     }
     
     private func goTo(nextLevel: SceneIdentifier) {
@@ -61,7 +50,7 @@ class MainMenu: SKScene, SceneManager {
         // pass key for next level which is passed from didMove to view of previous level
         print("loading scene for \(nxtLvl)")
 //        loadScene(withIdentifier: SceneIdentifier(rawValue: nxtLvl)!)
-        loadScene(withIdentifier: SceneIdentifier(rawValue: nxtLvl)!, currentScore: 0, currentTime: 0, currentPlayerHealth: 100)
+        loadScene(withIdentifier: SceneIdentifier(rawValue: nxtLvl)!, currentScore: 0, currentTime: 0, currentPlayerHealth: 500, spidersSmashed: 0)
     }
     
 }

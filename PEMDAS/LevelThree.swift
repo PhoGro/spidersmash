@@ -9,7 +9,7 @@
 import SpriteKit
 import GameplayKit
 
-class LevelThree: LevelOne {
+class LevelThree: CoreGame {
     
     override init(size: CGSize) {
         super.init(size: size)
@@ -34,10 +34,12 @@ class LevelThree: LevelOne {
         
         playerHealth = self.userData?.value(forKey: "playerHealth") as! Double
         
+        spidersSmashedCount = self.userData?.value(forKey: "spidersSmashed") as! Int
+        
         print("arrived at \(String(describing: nxtLvl))")
         
         //change nxtLvl to "LevelOne"
-        nxtLvl = "GameOver"
+        nxtLvl = "LevelEnd"
         print("Go to: \(String(describing: nxtLvl))")
         //to goal
         

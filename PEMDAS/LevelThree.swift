@@ -22,8 +22,7 @@ class LevelThree: CoreGame {
     
     override func didMove(to view: SKView) {
         super.didMove(to: view)
-        
-        waveLevel = 3
+        waveLevel = self.userData?.value(forKey: "waveLevel") as! Int
         print("Current Wave: \(waveLevel). It's suposed to be three")
         
         score =  self.userData?.value(forKey: "score") as! Int

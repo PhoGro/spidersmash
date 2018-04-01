@@ -29,6 +29,7 @@ class Spider : SKSpriteNode {
     var spiderCoolDownCounter: Int = 5
     var spiderAction: String = ""
     var moving: Bool = false
+    let spiderAtlas = SKTextureAtlas(named: "Spiders")
  
     required init?(coder aDecoder: NSCoder) {
         fatalError("NSCoding not supported")
@@ -40,35 +41,35 @@ class Spider : SKSpriteNode {
         
         switch spiderType {
         case .orangeSpider:
-            frontTexture = SKTexture(imageNamed: "OrangeSpider")
+            frontTexture = spiderAtlas.textureNamed("OrangeSpider")
             spiderMaxHealth = 8
             spiderHealth = 8
             spiderAttacking = false
             spiderCoolDown = false
             spiderCoolDownStarted = false
         case .blueSpider:
-            frontTexture = SKTexture(imageNamed: "BlueSpider")
+            frontTexture = spiderAtlas.textureNamed("BlueSpider")
             spiderMaxHealth = 6
             spiderHealth = 6
             spiderAttacking = false
             spiderCoolDown = false
             spiderCoolDownStarted = false
         case .yellowSpider:
-            frontTexture = SKTexture(imageNamed: "YellowSpider")
+            frontTexture = spiderAtlas.textureNamed("YellowSpider")
             spiderMaxHealth = 4
             spiderHealth = 4
             spiderAttacking = false
             spiderCoolDown = false
             spiderCoolDownStarted = false
         case .greenSpider:
-            frontTexture = SKTexture(imageNamed: "GreenSpider")
+            frontTexture = spiderAtlas.textureNamed("GreenSpider")
             spiderMaxHealth = 5
             spiderHealth = 5
             spiderAttacking = false
             spiderCoolDown = false
             spiderCoolDownStarted = false
         case .purpleSpider:
-            frontTexture = SKTexture(imageNamed: "PurpleSpider")
+            frontTexture = spiderAtlas.textureNamed("PurpleSpider")
             spiderMaxHealth = 4
             spiderHealth = 4
             spiderAttacking = false

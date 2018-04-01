@@ -22,7 +22,7 @@ private let sceneSize = CGSize(width: 768, height: 1024)
 protocol SceneManager { }
 extension SceneManager where Self: SKScene {
     
-    func loadScene(withIdentifier identifier: SceneIdentifier, currentScore: Int, currentTime: Int, currentPlayerHealth: Double, spidersSmashed: Int) {
+    func loadScene(withIdentifier identifier: SceneIdentifier, currentScore: Int, currentTime: Int, currentPlayerHealth: Double, spidersSmashed: Int, waveLevel: Int) {
         
         let points = currentScore
         let levelTimerValue = currentTime
@@ -36,6 +36,7 @@ extension SceneManager where Self: SKScene {
         nextLevel?.userData?.setObject(levelTimerValue, forKey: "LTV" as NSCopying)
         nextLevel?.userData?.setObject(playerHealth, forKey: "playerHealth" as NSCopying)
         nextLevel?.userData?.setObject(spidersSmashed, forKey: "spidersSmashed" as NSCopying)
+        nextLevel?.userData?.setObject(waveLevel, forKey: "waveLevel" as NSCopying)
         nextLevel?.scaleMode = .resizeFill
         self.view?.presentScene(nextLevel!, transition: reveal)
         

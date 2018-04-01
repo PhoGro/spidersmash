@@ -38,12 +38,14 @@ class GameViewController: UIViewController {
             let skView = self.view as! SKView
             skView.showsFPS = true
             skView.showsNodeCount = true
+            skView.showsDrawCount = true
+            skView.showsQuadCount = true
             
             /* Sprite Kit applies additional optimizations to improve rendering performance */
             skView.ignoresSiblingOrder = true
             
             /* Set the scale mode to scale to fit the window */
-            scene.scaleMode = .aspectFill
+            scene.scaleMode = .resizeFill
             
             skView.presentScene(scene)
         }
@@ -59,6 +61,10 @@ class GameViewController: UIViewController {
         } else {
             return .all
         }
+    }
+    
+    override func preferredScreenEdgesDeferringSystemGestures() -> UIRectEdge {
+        return .bottom
     }
 
     override func didReceiveMemoryWarning() {

@@ -542,7 +542,7 @@ class CoreGame: SKScene, SKPhysicsContactDelegate, Alerts, SceneManager {
             spawnSpider?.physicsBody?.contactTestBitMask = 1
             spawnSpider?.physicsBody?.categoryBitMask = 5
             spawnSpider?.physicsBody?.mass = 3.5
-            spawnSpider?.physicsBody?.restitution = 0.7
+            spawnSpider?.physicsBody?.restitution = 0.2
             spawnSpider?.physicsBody?.isDynamic = true
             spawnSpider?.physicsBody?.affectedByGravity = false
             spawnSpider?.lightingBitMask = 5

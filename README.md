@@ -1,5 +1,8 @@
 # spidersmash
-Learning Swift and Spritekit by making a small game
+Learning Swift and Spritekit by making a small game.
+
+#IMPORTANT NOTE#
+SpiderSmash is currently optimized using an iPhone X. It will not run well inside of Xcode's simulator so I'd suggest running this on a device. I'll be looking at optimization for iPhone 6/7/8 size screens in the near future, but I do not have access to plus size screens so any help there would be wonderful!
 
 # Overview
 

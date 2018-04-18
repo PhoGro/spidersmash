@@ -43,3 +43,16 @@ enum ContactType{
     case none
 }
 
+enum Levels {
+    case LevelOne,
+    LevelTwo,
+    LevelThree
+}
+
+enum playerBoost {
+    case increaseAttack
+    case increaseDefense
+    case healToFullHealth
+    case none
+}
+

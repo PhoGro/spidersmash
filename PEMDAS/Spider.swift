@@ -42,36 +42,36 @@ class Spider : SKSpriteNode {
         switch spiderType {
         case .orangeSpider:
             frontTexture = spiderAtlas.textureNamed("OrangeSpider")
-            spiderMaxHealth = 8
-            spiderHealth = 8
+            spiderMaxHealth = 20
+            spiderHealth = 20
             spiderAttacking = false
             spiderCoolDown = false
             spiderCoolDownStarted = false
         case .blueSpider:
             frontTexture = spiderAtlas.textureNamed("BlueSpider")
-            spiderMaxHealth = 6
-            spiderHealth = 6
+            spiderMaxHealth = 15
+            spiderHealth = 15
             spiderAttacking = false
             spiderCoolDown = false
             spiderCoolDownStarted = false
         case .yellowSpider:
             frontTexture = spiderAtlas.textureNamed("YellowSpider")
-            spiderMaxHealth = 4
-            spiderHealth = 4
+            spiderMaxHealth = 15
+            spiderHealth = 15
             spiderAttacking = false
             spiderCoolDown = false
             spiderCoolDownStarted = false
         case .greenSpider:
             frontTexture = spiderAtlas.textureNamed("GreenSpider")
-            spiderMaxHealth = 5
-            spiderHealth = 5
+            spiderMaxHealth = 10
+            spiderHealth = 10
             spiderAttacking = false
             spiderCoolDown = false
             spiderCoolDownStarted = false
         case .purpleSpider:
             frontTexture = spiderAtlas.textureNamed("PurpleSpider")
-            spiderMaxHealth = 4
-            spiderHealth = 4
+            spiderMaxHealth = 10
+            spiderHealth = 10
             spiderAttacking = false
             spiderCoolDown = false
             spiderCoolDownStarted = false

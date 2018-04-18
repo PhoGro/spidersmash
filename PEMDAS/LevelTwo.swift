@@ -22,33 +22,31 @@ class LevelTwo: CoreGame {
     
     override func didMove(to view: SKView) {
         super.didMove(to: view)
-        waveLevel = self.userData?.value(forKey: "waveLevel") as! Int
-        print("Current Wave: \(waveLevel). It's suposed to be two")
         
         score =  self.userData?.value(forKey: "score") as! Int
         points = score
         
         timeElapsed = self.userData?.value(forKey: "LTV") as! Int
         levelTimerValue = timeElapsed
-        
+
         spidersSmashedCount = self.userData?.value(forKey: "spidersSmashed") as! Int
         
         playerHealth = self.userData?.value(forKey: "playerHealth") as! Double
         
-        print("arrived at \(String(describing: nxtLvl))")
-        
-        //change nxtLvl to "LevelThree"
-        nxtLvl = "LevelThree"
-        
-        
-        print("Go to: \(String(describing: nxtLvl))")
-        
+        playerMaxDamage = self.userData?.value(forKey: "playerMaxDamage") as! Int
+        playerMinDamage = self.userData?.value(forKey: "playerMinDamage") as! Int
+        playerMaxHealth = self.userData?.value(forKey: "playerMaxHealth") as! Double
+        spiderDamageMultiplier = self.userData?.value(forKey: "spiderDamageMultiplier") as! Double
+
+        print("LEVEL TWO")
+        print("Player Max Damage: \(playerMaxDamage)")
+        print("Player Min Damage: \(playerMinDamage)")
+        print("Player Max Health: \(playerMaxHealth)")
+        print("Spider Damage Multiplier: \(spiderDamageMultiplier)")
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         super.touchesBegan(touches, with: event)
-        
-        print("touch!")
     }
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {

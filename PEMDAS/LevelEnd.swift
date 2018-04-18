@@ -50,7 +50,8 @@ class LevelEnd: LevelOne {
         spidersSmashedCount = self.userData?.value(forKey: "spidersSmashed") as! Int
         playerHealth = self.userData?.value(forKey: "playerHealth") as! Double
         
-        finalScore = (score * Int(playerHealth)) / (timeElapsed / 10)
+        
+        finalScore = (points * spidersSmashedCount)
         
         if finalScore > UserDefaults().integer(forKey: "HIGHSCORE") {
             saveHighScore()

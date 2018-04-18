@@ -24,8 +24,13 @@
 		8639C23F1F44FBC80035CAA5 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8639C23D1F44FBC80035CAA5 /* Main.storyboard */; };
 		8639C2411F44FBC80035CAA5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8639C2401F44FBC80035CAA5 /* Assets.xcassets */; };
 		8639C2441F44FBC80035CAA5 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8639C2421F44FBC80035CAA5 /* LaunchScreen.storyboard */; };
+		8646B8AA2081773E0075FB7C /* LevelTransition.sks in Resources */ = {isa = PBXBuildFile; fileRef = 8646B8A92081773E0075FB7C /* LevelTransition.sks */; };
+		8646B8AC208178AE0075FB7C /* LevelTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8646B8AB208178AE0075FB7C /* LevelTransition.swift */; };
+		8646B8B22085562B0075FB7C /* Hero.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8646B8B12085562B0075FB7C /* Hero.swift */; };
+		8646B8B42086ABDE0075FB7C /* Buffs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8646B8B32086ABDE0075FB7C /* Buffs.swift */; };
 		86619E2220542820009555F0 /* LevelOne.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86619E2120542820009555F0 /* LevelOne.swift */; };
 		866AE54A1FAD13E400C1BB6D /* Spider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 866AE5491FAD13E400C1BB6D /* Spider.swift */; };
+		86A2BAE720790AF7000D8DBE /* Bosses.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86A2BAE620790AF7000D8DBE /* Bosses.swift */; };
 		86B2BDB3204A126E00AB73A0 /* playerHUD.sks in Resources */ = {isa = PBXBuildFile; fileRef = 86B2BDB2204A126E00AB73A0 /* playerHUD.sks */; };
 		86B2BDB5204AFC5F00AB73A0 /* legacyCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86B2BDB4204AFC5E00AB73A0 /* legacyCode.swift */; };
 		86CF443D2023DA3400B75CC5 /* LevelTwo.sks in Resources */ = {isa = PBXBuildFile; fileRef = 86CF443C2023DA3400B75CC5 /* LevelTwo.sks */; };
@@ -62,8 +67,13 @@
 		8639C2401F44FBC80035CAA5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		8639C2431F44FBC80035CAA5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		8639C2451F44FBC80035CAA5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		8646B8A92081773E0075FB7C /* LevelTransition.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = LevelTransition.sks; sourceTree = "<group>"; };
+		8646B8AB208178AE0075FB7C /* LevelTransition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LevelTransition.swift; sourceTree = "<group>"; };
+		8646B8B12085562B0075FB7C /* Hero.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Hero.swift; sourceTree = "<group>"; };
+		8646B8B32086ABDE0075FB7C /* Buffs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Buffs.swift; sourceTree = "<group>"; };
 		86619E2120542820009555F0 /* LevelOne.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LevelOne.swift; sourceTree = "<group>"; };
 		866AE5491FAD13E400C1BB6D /* Spider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Spider.swift; sourceTree = "<group>"; };
+		86A2BAE620790AF7000D8DBE /* Bosses.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Bosses.swift; sourceTree = "<group>"; };
 		86B2BDB2204A126E00AB73A0 /* playerHUD.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = playerHUD.sks; sourceTree = "<group>"; };
 		86B2BDB4204AFC5E00AB73A0 /* legacyCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = legacyCode.swift; sourceTree = "<group>"; };
 		86CF443C2023DA3400B75CC5 /* LevelTwo.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = LevelTwo.sks; sourceTree = "<group>"; };
@@ -98,6 +108,9 @@
 				86063CFA1F4CD8D300E21751 /* Card.swift */,
 				86CF444D2030A16200B75CC5 /* ActiveHammer.swift */,
 				866AE5491FAD13E400C1BB6D /* Spider.swift */,
+				86A2BAE620790AF7000D8DBE /* Bosses.swift */,
+				8646B8B12085562B0075FB7C /* Hero.swift */,
+				8646B8B32086ABDE0075FB7C /* Buffs.swift */,
 				860B9F601FF423BE005E324A /* HeathBar.swift */,
 			);
 			name = Classes;
@@ -128,6 +141,7 @@
 				86CF44402023DC3D00B75CC5 /* LevelThree.sks */,
 				860B9F5C1FEB5331005E324A /* GameOverScene.sks */,
 				8617D997206C5EC200442A18 /* LevelEnd.sks */,
+				8646B8A92081773E0075FB7C /* LevelTransition.sks */,
 				86F4DBAB2044DDD60018255D /* RoomOne.sks */,
 				8617D991206C4AB600442A18 /* pathOne.sks */,
 				8617D993206C4F3000442A18 /* pathTwo.sks */,
@@ -175,6 +189,7 @@
 				86CF44442023DD1000B75CC5 /* LevelThree.swift */,
 				860B9F5E1FEB5358005E324A /* GameOverScene.swift */,
 				8617D995206C5EAE00442A18 /* LevelEnd.swift */,
+				8646B8AB208178AE0075FB7C /* LevelTransition.swift */,
 			);
 			name = Levels;
 			sourceTree = "<group>";
@@ -259,6 +274,7 @@
 				8617D994206C4F3000442A18 /* pathTwo.sks in Resources */,
 				8617D992206C4AB600442A18 /* pathOne.sks in Resources */,
 				8639C2441F44FBC80035CAA5 /* LaunchScreen.storyboard in Resources */,
+				8646B8AA2081773E0075FB7C /* LevelTransition.sks in Resources */,
 				8617D998206C5EC200442A18 /* LevelEnd.sks in Resources */,
 				86354CA9203D1D9300D10AC1 /* heart.sks in Resources */,
 				860B9F5D1FEB5331005E324A /* GameOverScene.sks in Resources */,
@@ -277,9 +293,12 @@
 			files = (
 				86CF44452023DD1000B75CC5 /* LevelThree.swift in Sources */,
 				8639C23A1F44FBC80035CAA5 /* CoreGame.swift in Sources */,
+				86A2BAE720790AF7000D8DBE /* Bosses.swift in Sources */,
 				860B9F611FF423BE005E324A /* HeathBar.swift in Sources */,
 				8639C23C1F44FBC80035CAA5 /* GameViewController.swift in Sources */,
+				8646B8B42086ABDE0075FB7C /* Buffs.swift in Sources */,
 				860B9F5F1FEB5358005E324A /* GameOverScene.swift in Sources */,
+				8646B8AC208178AE0075FB7C /* LevelTransition.swift in Sources */,
 				86619E2220542820009555F0 /* LevelOne.swift in Sources */,
 				86CF444E2030A16200B75CC5 /* ActiveHammer.swift in Sources */,
 				86B2BDB5204AFC5F00AB73A0 /* legacyCode.swift in Sources */,
@@ -288,6 +307,7 @@
 				86FF44A51F48752D00E9053C /* Alerts.swift in Sources */,
 				86CF44482025380100B75CC5 /* MainMenu.swift in Sources */,
 				86CF44432023DCE400B75CC5 /* SceneLoadManager.swift in Sources */,
+				8646B8B22085562B0075FB7C /* Hero.swift in Sources */,
 				86F4DBAA2041A44A0018255D /* Structs.swift in Sources */,
 				86CF443F2023DBB700B75CC5 /* LevelTwo.swift in Sources */,
 				866AE54A1FAD13E400C1BB6D /* Spider.swift in Sources */,

@@ -33,16 +33,18 @@ class LevelTwo: CoreGame {
         
         playerHealth = self.userData?.value(forKey: "playerHealth") as! Double
         
-        playerMaxDamage = self.userData?.value(forKey: "playerMaxDamage") as! Int
-        playerMinDamage = self.userData?.value(forKey: "playerMinDamage") as! Int
+        playerMaxDamage = self.userData?.value(forKey: "playerMaxDamage") as! Double
+        playerMinDamage = self.userData?.value(forKey: "playerMinDamage") as! Double
         playerMaxHealth = self.userData?.value(forKey: "playerMaxHealth") as! Double
         spiderDamageMultiplier = self.userData?.value(forKey: "spiderDamageMultiplier") as! Double
-
+        spiderHealthMultiplier = self.userData?.value(forKey: "spiderHealthMultiplier") as! Double
+        
         print("LEVEL TWO")
         print("Player Max Damage: \(playerMaxDamage)")
         print("Player Min Damage: \(playerMinDamage)")
         print("Player Max Health: \(playerMaxHealth)")
         print("Spider Damage Multiplier: \(spiderDamageMultiplier)")
+        print("Spider Health Multiplier: \(spiderHealthMultiplier)")
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {

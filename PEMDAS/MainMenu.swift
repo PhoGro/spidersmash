@@ -49,7 +49,7 @@ class MainMenu: SKScene, SceneManager {
         
         // pass key for next level which is passed from didMove to view of previous level
         print("loading scene for \(nxtLvl)")
-        loadScene(withIdentifier: SceneIdentifier(rawValue: nxtLvl)!, currentScore: 0, currentTime: 0, currentPlayerHealth: 500, spidersSmashed: 0, waveLevel: 1, playerMaxDamage: 10, playerMinDamage: 3, playerMaxHealth: 500, playerMultipler: 1, spiderDamageMultiplier: 1)
+        loadScene(withIdentifier: SceneIdentifier(rawValue: nxtLvl)!, currentScore: 0, currentTime: 0, currentPlayerHealth: 500, spidersSmashed: 0, waveLevel: 1, playerMaxDamage: 10, playerMinDamage: 3, playerMaxHealth: 500, playerMultipler: 1, spiderDamageMultiplier: 1, spiderHealthMultiplier: 1)
     }
     
 }

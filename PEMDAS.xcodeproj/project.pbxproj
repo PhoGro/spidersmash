@@ -28,6 +28,7 @@
 		8646B8AC208178AE0075FB7C /* LevelTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8646B8AB208178AE0075FB7C /* LevelTransition.swift */; };
 		8646B8B22085562B0075FB7C /* Hero.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8646B8B12085562B0075FB7C /* Hero.swift */; };
 		8646B8B42086ABDE0075FB7C /* Buffs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8646B8B32086ABDE0075FB7C /* Buffs.swift */; };
+		8646B8B620894C3F0075FB7C /* RemoveCard.sks in Resources */ = {isa = PBXBuildFile; fileRef = 8646B8B520894C3F0075FB7C /* RemoveCard.sks */; };
 		86619E2220542820009555F0 /* LevelOne.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86619E2120542820009555F0 /* LevelOne.swift */; };
 		866AE54A1FAD13E400C1BB6D /* Spider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 866AE5491FAD13E400C1BB6D /* Spider.swift */; };
 		86A2BAE720790AF7000D8DBE /* Bosses.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86A2BAE620790AF7000D8DBE /* Bosses.swift */; };
@@ -71,6 +72,7 @@
 		8646B8AB208178AE0075FB7C /* LevelTransition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LevelTransition.swift; sourceTree = "<group>"; };
 		8646B8B12085562B0075FB7C /* Hero.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Hero.swift; sourceTree = "<group>"; };
 		8646B8B32086ABDE0075FB7C /* Buffs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Buffs.swift; sourceTree = "<group>"; };
+		8646B8B520894C3F0075FB7C /* RemoveCard.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = RemoveCard.sks; sourceTree = "<group>"; };
 		86619E2120542820009555F0 /* LevelOne.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LevelOne.swift; sourceTree = "<group>"; };
 		866AE5491FAD13E400C1BB6D /* Spider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Spider.swift; sourceTree = "<group>"; };
 		86A2BAE620790AF7000D8DBE /* Bosses.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Bosses.swift; sourceTree = "<group>"; };
@@ -197,6 +199,7 @@
 		86CF4453203CFA4E00B75CC5 /* Emitters */ = {
 			isa = PBXGroup;
 			children = (
+				8646B8B520894C3F0075FB7C /* RemoveCard.sks */,
 				86CF4454203CFA8A00B75CC5 /* GreenScatter.sks */,
 				86354CA8203D1D9300D10AC1 /* heart.sks */,
 			);
@@ -275,6 +278,7 @@
 				8617D992206C4AB600442A18 /* pathOne.sks in Resources */,
 				8639C2441F44FBC80035CAA5 /* LaunchScreen.storyboard in Resources */,
 				8646B8AA2081773E0075FB7C /* LevelTransition.sks in Resources */,
+				8646B8B620894C3F0075FB7C /* RemoveCard.sks in Resources */,
 				8617D998206C5EC200442A18 /* LevelEnd.sks in Resources */,
 				86354CA9203D1D9300D10AC1 /* heart.sks in Resources */,
 				860B9F5D1FEB5331005E324A /* GameOverScene.sks in Resources */,

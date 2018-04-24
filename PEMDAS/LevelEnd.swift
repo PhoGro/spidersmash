@@ -29,6 +29,13 @@ class LevelEnd: LevelOne {
         }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+       
+        let touch = touches.first!
+        let location = touch.location(in: self)
+        let node = self.atPoint(location)
+        
+        
+        if ((node as? SKSpriteNode) != nil) && (node.name?.contains("restartGame") == true) {
         restartGame()
         
         let transition = SKTransition.flipVertical(withDuration: 0.5)
@@ -39,6 +46,7 @@ class LevelEnd: LevelOne {
             
         view?.presentScene(mainMenu, transition: transition)
         
+        }
         }
         
     }
@@ -51,7 +59,7 @@ class LevelEnd: LevelOne {
         playerHealth = self.userData?.value(forKey: "playerHealth") as! Double
         
         
-        finalScore = (points * spidersSmashedCount)
+        finalScore = (score * spidersSmashedCount)
         
         if finalScore > UserDefaults().integer(forKey: "HIGHSCORE") {
             saveHighScore()

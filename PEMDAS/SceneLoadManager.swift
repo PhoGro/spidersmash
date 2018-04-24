@@ -23,7 +23,7 @@ private let sceneSize = CGSize(width: 768, height: 1024)
 protocol SceneManager { }
 extension SceneManager where Self: SKScene {
     
-    func loadScene(withIdentifier identifier: SceneIdentifier, currentScore: Int, currentTime: Int, currentPlayerHealth: Double, spidersSmashed: Int, waveLevel: Int, playerMaxDamage: Int, playerMinDamage: Int, playerMaxHealth: Double, playerMultipler: Int, spiderDamageMultiplier: Double) {
+    func loadScene(withIdentifier identifier: SceneIdentifier, currentScore: Int, currentTime: Int, currentPlayerHealth: Double, spidersSmashed: Int, waveLevel: Int, playerMaxDamage: Double, playerMinDamage: Double, playerMaxHealth: Double, playerMultipler: Int, spiderDamageMultiplier: Double, spiderHealthMultiplier: Double) {
         
         let points = currentScore
         let levelTimerValue = currentTime
@@ -34,6 +34,7 @@ extension SceneManager where Self: SKScene {
         let playerMinDamage = playerMinDamage
         let playerMaxHealth = playerMaxHealth
         let spiderDamageMultiplier = spiderDamageMultiplier
+        let spiderHealthMultiplier = spiderHealthMultiplier
         
         let reveal = SKTransition.crossFade(withDuration: 0.25)
         let nextLevel = SKScene(fileNamed: identifier.rawValue)
@@ -48,6 +49,7 @@ extension SceneManager where Self: SKScene {
         nextLevel?.userData?.setObject(playerMaxHealth, forKey: "playerMaxHealth" as NSCopying)
         nextLevel?.userData?.setObject(playerDMGMultiplier, forKey: "playerDMGMultiply" as NSCopying)
         nextLevel?.userData?.setObject(spiderDamageMultiplier, forKey: "spiderDamageMultiplier" as NSCopying)
+        nextLevel?.userData?.setObject(spiderHealthMultiplier, forKey: "spiderHealthMultiplier" as NSCopying)
         nextLevel?.scaleMode = .resizeFill
         self.view?.presentScene(nextLevel!, transition: reveal)
         

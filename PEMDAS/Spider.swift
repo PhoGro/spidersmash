@@ -21,8 +21,8 @@ class Spider : SKSpriteNode {
     
     let spiderType: SpiderType
     let frontTexture: SKTexture
-    var spiderHealth: Int = 0
-    var spiderMaxHealth: Int = 0
+    var spiderHealth: Double = 0
+    var spiderMaxHealth: Double = 0
     var spiderAttacking: Bool = false
     var spiderCoolDown: Bool = false
     var spiderCoolDownStarted: Bool = false

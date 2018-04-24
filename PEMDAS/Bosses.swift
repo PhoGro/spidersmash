@@ -19,8 +19,8 @@ class Boss : SKSpriteNode {
     
     let bossType: BossType
     let frontTexture: SKTexture
-    var bossHealth: Int = 0
-    var bossMaxHealth: Int = 0
+    var bossHealth: Double = 0
+    var bossMaxHealth: Double = 0
     var bossAttacking: Bool = false
     var bossCoolDown: Bool = false
     var bossCoolDownStarted: Bool = false

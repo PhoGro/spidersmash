@@ -25,6 +25,7 @@ class CoreGame: SKScene, SKPhysicsContactDelegate, Alerts, SceneManager {
     let spiderAtlas = SKTextureAtlas(named: "Spiders")
     let bossAtlas = SKTextureAtlas(named: "Boss")
     var spiderDamageMultiplier: Double = 1.0
+    var spiderHealthMultiplier: Double = 1.0
    // var spiderHealth = 4 //spider healthpoints
     var spiderMaxDamage = 8 //maximum damange a spider can do
     var spiderCrit = false //gives a spider a chance to earn a critical damage mutltipler
@@ -81,8 +82,8 @@ class CoreGame: SKScene, SKPhysicsContactDelegate, Alerts, SceneManager {
     var hammerFive: SKSpriteNode?
     var activeHammer = SKSpriteNode(imageNamed: "defaultHammerRight") //to determine which color is active
     var hammerDirection = "HammerRight" // to determine which texture to display based on player's direction
-    var playerMaxDamage = 10 // maximum damage a player can do
-    var playerMinDamage = 5
+    var playerMaxDamage: Double = 10 // maximum damage a player can do
+    var playerMinDamage: Double = 5 // minium damage a player can do
     var playerCrit = false // allows player a chance to earn a critical damage multipler
     var selectedNode: SKSpriteNode? //generic variable to hold a sprite node which has been touched by a player
     let hammerAtlas = SKTextureAtlas(named: "ActiveHammers")
@@ -466,11 +467,21 @@ class CoreGame: SKScene, SKPhysicsContactDelegate, Alerts, SceneManager {
         swipeUp.direction = UISwipeGestureRecognizerDirection.up
         self.view?.addGestureRecognizer(swipeUp)
         
+        
+        spiderDamageMultiplier = self.userData?.value(forKey: "spiderDamageMultiplier") as! Double
+        //spiderDamageMultiplier = spiderDamageMultiplier + spiderDamageMultiplier * 0.2
+        userData?.setObject(spiderDamageMultiplier, forKey: "spiderDamageMultiplier" as NSCopying)
+        
+        spiderHealthMultiplier = self.userData?.value(forKey: "spiderHealthMultiplier") as! Double
+        //spiderHealthMultiplier = spiderHealthMultiplier + spiderHealthMultiplier * 0.35
+        userData?.setObject(spiderHealthMultiplier, forKey: "spiderHealthMultiplier" as NSCopying)
+        
         print("CoreGame")
         print("Player Max Damage: \(playerMaxDamage)")
         print("Player Min Damage: \(playerMinDamage)")
         print("Player Max Health: \(playerMaxHealth)")
         print("Spider Damage Multiplier: \(spiderDamageMultiplier)")
+        print("Spider Health Multiplier: \(spiderHealthMultiplier)")
         
     }
     
@@ -568,8 +579,7 @@ class CoreGame: SKScene, SKPhysicsContactDelegate, Alerts, SceneManager {
         
         // handles game over if the player dies.
         if playerHealth < 1 {
-            nxtLvl = "LevelEnd"
-            goTo(nextLevel: SceneIdentifier(rawValue: nxtLvl)!)
+            gameOver()
         }
         
     }
@@ -692,6 +702,7 @@ class CoreGame: SKScene, SKPhysicsContactDelegate, Alerts, SceneManager {
         randomBoss.physicsBody?.affectedByGravity = false
         randomBoss.lightingBitMask = 5
         randomBoss.shadowedBitMask = 5
+        randomBoss.bossHealth = randomBoss.bossHealth * spiderHealthMultiplier
     
         let playerSpiderDistance = player.position.distance(point: randomBoss.position)
         
@@ -722,6 +733,9 @@ class CoreGame: SKScene, SKPhysicsContactDelegate, Alerts, SceneManager {
             spawnSpider?.physicsBody?.affectedByGravity = false
             spawnSpider?.lightingBitMask = 5
             spawnSpider?.shadowedBitMask = 5
+        
+        spawnSpider?.spiderHealth = (spawnSpider?.spiderHealth)! * spiderHealthMultiplier
+        print("Spider health: \(String(describing: spawnSpider?.spiderHealth))")
         
         let playerSpiderDistance = player.position.distance(point: (spawnSpider?.position)!)
         
@@ -938,9 +952,9 @@ class CoreGame: SKScene, SKPhysicsContactDelegate, Alerts, SceneManager {
     
     //MARK: COMBAT FUNCTIONS
     
-    func playerDamage() -> Int {
+    func playerDamage() -> Double {
         //random damage selected based off player's max damage number
-        var randomDamage = Int(arc4random_uniform(UInt32(playerMaxDamage)) + UInt32(playerMinDamage))
+        var randomDamage = Double(arc4random_uniform(UInt32(playerMaxDamage)) + UInt32(playerMinDamage))
         
         //allow for block chance
         let blockChance = Int(arc4random_uniform(100)+1)
@@ -951,7 +965,7 @@ class CoreGame: SKScene, SKPhysicsContactDelegate, Alerts, SceneManager {
         //if block chance damage dealt is zero
         if blockChance < 8 {
             randomDamage = 0
-        } else if blockChance > 8 && critChance > 95 && randomDamage > (playerMaxDamage * Int(0.85)){
+        } else if blockChance > 8 && critChance > 95 && randomDamage > playerMaxDamage * 0.85 {
             playerCrit = true
             randomDamage = randomDamage * 3
         } else {
@@ -1276,19 +1290,28 @@ class CoreGame: SKScene, SKPhysicsContactDelegate, Alerts, SceneManager {
         
         finalScore = (points * spidersSmashedCount)
         startGame = false
+        startGamePlay = false
+        
+        nxtLvl = "LevelEnd"
         
         if finalScore > UserDefaults().integer(forKey: "HIGHSCORE") {
             saveHighScore()
         }
         
-        let gameOver = GameOverScene(size: (self.scene?.size)!)
-        //let gameOver = GameOverScene(fileNamed: "GameOverScene")
-        gameOver.scaleMode = .aspectFill
-        gameOver.userData = NSMutableDictionary()
-        gameOver.userData?.setObject(finalScore, forKey: "score" as NSCopying)
-        gameOver.userData?.setObject(highScore, forKey: "HS" as NSCopying)
         
-        self.view?.presentScene(gameOver)
+      
+        
+        
+        goTo(nextLevel: SceneIdentifier(rawValue: nxtLvl)!)
+        
+//        let gameOver = GameOverScene(size: (self.scene?.size)!)
+//        //let gameOver = GameOverScene(fileNamed: "GameOverScene")
+//        gameOver.scaleMode = .aspectFill
+//        gameOver.userData = NSMutableDictionary()
+//        gameOver.userData?.setObject(finalScore, forKey: "score" as NSCopying)
+//        gameOver.userData?.setObject(highScore, forKey: "HS" as NSCopying)
+//
+//        self.view?.presentScene(gameOver)
         
     }
     
@@ -1321,7 +1344,7 @@ class CoreGame: SKScene, SKPhysicsContactDelegate, Alerts, SceneManager {
 //        loadScene(withIdentifier: SceneIdentifier(rawValue: nxtLvl)!)
         startGamePlay = false
         
-        loadScene(withIdentifier: SceneIdentifier(rawValue: nxtLvl)!, currentScore: points, currentTime: levelTimerValue, currentPlayerHealth: playerHealth, spidersSmashed: spidersSmashedCount, waveLevel: waveLevel, playerMaxDamage: playerMaxDamage, playerMinDamage: playerMinDamage, playerMaxHealth: playerMaxHealth, playerMultipler: playerDamageMultiplier, spiderDamageMultiplier: spiderDamageMultiplier)
+        loadScene(withIdentifier: SceneIdentifier(rawValue: nxtLvl)!, currentScore: points, currentTime: levelTimerValue, currentPlayerHealth: playerHealth, spidersSmashed: spidersSmashedCount, waveLevel: waveLevel, playerMaxDamage: playerMaxDamage, playerMinDamage: playerMinDamage, playerMaxHealth: playerMaxHealth, playerMultipler: playerDamageMultiplier, spiderDamageMultiplier: spiderDamageMultiplier, spiderHealthMultiplier: spiderHealthMultiplier)
         
     }
     
@@ -1329,7 +1352,7 @@ class CoreGame: SKScene, SKPhysicsContactDelegate, Alerts, SceneManager {
         
         print("Level Cleared   Go To Transition")
         
-        loadScene(withIdentifier: SceneIdentifier(rawValue: "LevelTransition")!, currentScore: points, currentTime: levelTimerValue, currentPlayerHealth: playerHealth, spidersSmashed: spidersSmashedCount, waveLevel: waveLevel, playerMaxDamage: playerMaxDamage, playerMinDamage: playerMinDamage, playerMaxHealth: playerMaxHealth, playerMultipler: playerDamageMultiplier, spiderDamageMultiplier: spiderDamageMultiplier)
+        loadScene(withIdentifier: SceneIdentifier(rawValue: "LevelTransition")!, currentScore: points, currentTime: levelTimerValue, currentPlayerHealth: playerHealth, spidersSmashed: spidersSmashedCount, waveLevel: waveLevel, playerMaxDamage: playerMaxDamage, playerMinDamage: playerMinDamage, playerMaxHealth: playerMaxHealth, playerMultipler: playerDamageMultiplier, spiderDamageMultiplier: spiderDamageMultiplier, spiderHealthMultiplier: spiderHealthMultiplier)
         
     }
     
